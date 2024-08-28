@@ -15,10 +15,10 @@ user_pet = sa.Table(
 )
 
 
-
 class User(UserMixin, db.Model):
     id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
     username: so.MappedColumn[str] = so.mapped_column(sa.String(60))
+    email: so.Mapped[str] = so.mapped_column(sa.String(128), unique=True, index=True)
     password_hash: so.MappedColumn[Optional[str]] = so.mapped_column(sa.String(60))
 
     def set_password(self, password):
@@ -36,7 +36,6 @@ def load_user(id):
     return db.session.get(User, int(id))
 
 
-
 class Pet(db.Model):
     id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
     topic: so.MappedColumn[str] = so.mapped_column(sa.String(100))
@@ -44,3 +43,4 @@ class Pet(db.Model):
 
     def __repr__(self):
         return f'Pet: {self.topic}'
+
