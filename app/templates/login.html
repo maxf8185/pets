@@ -1,22 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Login</h1>
-
-<form action="/login" method="post" style="max-width: 300px; margin: auto;">
-    <div style="margin-bottom: 10px;">
-        <label>Username</label>
-        <input name="username" type="text" style="width: 100%; padding: 8px;">
-    </div>
-
-    <div style="margin-bottom: 10px;">
-        <label>Password</label>
-        <input name="password" type="password" style="width: 100%; padding: 8px;">
-    </div>
-
-    <div style="text-align: center;">
-        <button type="submit" style="padding: 8px 20px; background-color: #007BFF; color: white; border: none;ппше">Login</button>
-    </div>
-</form>
-
+<div class="container w-25 mt-3">
+    <h1>Login</h1>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control") }}
+        </p>
+        <p>
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control") }}
+        </p>
+        <p>
+            {{ form.submit(class="btn btn-primary mb-3") }}
+        </p>
+    </form>
+</div>
 {% endblock %}
