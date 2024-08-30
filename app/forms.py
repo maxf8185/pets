@@ -1,8 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import FloatField, StringField, SubmitField
-from wtforms.fields.simple import PasswordField
+from wtforms import FloatField, StringField, SubmitField, IntegerField, TextAreaField, PasswordField
 from wtforms.validators import DataRequired, Email, EqualTo
-from wtforms.fields import DateField
 
 
 class RegistrationForm(FlaskForm):
@@ -10,10 +8,18 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirmed_password = PasswordField('Confirm password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Sing up')
+    submit = SubmitField('Sign up')
 
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Sign In')
+
+
+class PetForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    species = StringField('Species', validators=[DataRequired()])
+    age = IntegerField('Age', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    submit = SubmitField('Submit')

@@ -4,8 +4,82 @@
     <meta charset="UTF-8">
     <title>Pets</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        .bg-image {
+            background-image: url("{{ url_for('static', filename='image2.jpg') }}");
+            background-size: cover; /* или contain, если нужно */
+            background-position: center;
+            height: 100vh; /* Высота на весь экран */
+            color: white; /* Цвет текста, чтобы контент был виден на фоне */
+        }
+
+        .navbar-custom {
+            background-color: #220c01; /* Ваш желаемый цвет */
+        }
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #220c01;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #77594e;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #ab8f77;
+}
+
+    </style>
 </head>
 <body>
+<header class="p-3 navbar-custom text-bg-dark">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Бутстрап"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="#" class="nav-link px-2 text-secondary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Дом</font></font></a></li>
+          <li><a href="#" class="nav-link px-2 text-white"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Функции</font></font></a></li>
+          <li><a href="#" class="nav-link px-2 text-white"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Ценообразование</font></font></a></li>
+          <li><a href="#" class="nav-link px-2 text-white"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Часто задаваемые вопросы</font></font></a></li>
+          <li><a href="#" class="nav-link px-2 text-white"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">О</font></font></a></li>
+        </ul>
+
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+          <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Поиск..." aria-label="Поиск">
+        </form>
+
+        <div class="text-end">
+            {% if not current_user.is_authenticated %}
+          <button type="button" class="btn btn-outline-light me-2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><a href="{{ url_for('login') }}" style="text-decoration: none; color: inherit;">Авторизоваться</a></font></font></button>
+          <button type="button" class="btn btn-warning"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><a href="{{ url_for('register') }}" style="text-decoration: none; color: inherit;">Зарегистрироваться</a></font></font></button>
+
+            {% else %}
+            <div class="dropdown text-end">
+          <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://avatars.githubusercontent.com/u/162161132?v=4" alt="мдо" width="32" height="32" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-small" style="">
+            <li><a class="dropdown-item" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Новый проект...</font></font></a></li>
+            <li><a class="dropdown-item" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Настройки</font></font></a></li>
+            <li><a class="dropdown-item" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Профиль</font></font></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{ url_for('logout') }}"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">выход</font></font></a></li>
+          </ul>
+        </div>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+  </header>
+<div class="bg-image d-flex">
 {% block content %}
 {% endblock %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
