@@ -20,18 +20,6 @@ def profile():
     return render_template('profile.html', user_pets=user_pets)
 
 
-@app.route('/pet/adopt/<int:pet_id>')
-@login_required
-def adopt_pet(pet_id):
-    pet = db.session.scalar(sa.select(Pet).where(Pet.id == pet_id))
-    user_pets = db.session.scalars(current_user.user_pets.select())
-    if pet in user_pets:
-        return '<h1>You have already adopted this pet</h1>'
-    current_user.user_pets.add(pet)
-    db.session.commit()
-    return '<h1>You have adopted this pet successfully</h1>'
-
-
 @app.route('/pet/edit/<int:pet_id>', methods=['GET', 'POST'])
 def edit_pet(pet_id):
     pet = db.session.scalar(sa.select(Pet).where(Pet.id == pet_id))
@@ -60,16 +48,15 @@ def new_pet():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
+        flash('Registration successful! Please log in.')
         return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])

@@ -1,5 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<h1>Add a new pet</h1>
+<form action="/add-pet" method="post">
+    <div>
+        <label>Title</label>
+        <div>
+            <input name="pet_topic" required>
+        </div>
+        <label>Category</label>
+        <select name="category">
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit">Create</button>
+</form>
 {% endblock %}
