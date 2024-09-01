@@ -61,6 +61,14 @@ def new_pet():
     return render_template('new_pet.html', form=form)
 
 
+@app.route('/delete_pet/<int:pet_id>', methods=['POST'])
+def delete_pet(pet_id):
+    pet = Pet.query.get_or_404(pet_id)
+    db.session.delete(pet)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
