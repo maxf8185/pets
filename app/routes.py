@@ -3,11 +3,11 @@ import sqlalchemy as sa
 from flask_login import logout_user, current_user, login_required, login_user
 from app import app, db
 from .forms import RegistrationForm, LoginForm, PetForm
-from app.models import Pet, User
+from app.models import Pet, User, Category
 
 
 @app.route('/')
-# @login_required
+@login_required
 def index():
     pets = db.session.scalars(sa.select(Pet)).all()
     return render_template('index.html', pets=pets)
@@ -16,19 +16,29 @@ def index():
 @app.route('/profile')
 @login_required
 def profile():
-    user_pets = db.session.scalars(current_user.user_pets.select())
+    user_pets = current_user.user_pets
     return render_template('profile.html', user_pets=user_pets)
 
 
 @app.route('/pet/edit/<int:pet_id>', methods=['GET', 'POST'])
+@login_required
 def edit_pet(pet_id):
     pet = db.session.scalar(sa.select(Pet).where(Pet.id == pet_id))
+    if not pet:
+        flash('Pet not found', category='danger')
+        return redirect(url_for('index'))
     form = PetForm(obj=pet)
     if form.validate_on_submit():
         pet.name = form.name.data
-        pet.species = form.species.data
-        pet.age = form.age.data
         pet.description = form.description.data
+        pet.age = form.age.data
+        pet.breed = form.breed.data
+        pet.country = form.country.data
+        category = db.session.scalar(sa.select(Category).where(Category.id == form.category.data))
+        if category:
+            pet.category = category
+        else:
+            flash('Category not found', category='danger')
         db.session.commit()
         flash('You successfully edited the pet', category='success')
         return redirect(url_for('index'))
@@ -36,10 +46,15 @@ def edit_pet(pet_id):
 
 
 @app.route('/pet/new', methods=['GET', 'POST'])
+@login_required
 def new_pet():
     form = PetForm()
     if form.validate_on_submit():
-        pet = Pet(name=form.name.data,  age=form.age.data, description=form.description.data)
+        category = db.session.get(Category, form.category.data)
+        pet = Pet(name=form.name.data, description=form.description.data,
+                  age=form.age.data, breed=form.breed.data,
+                  country=form.country.data, category=category,
+                  user_id=current_user.id)
         db.session.add(pet)
         db.session.commit()
         return redirect(url_for('index'))

@@ -33,6 +33,19 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #ab8f77;
 }
+<style>
+.btn.btn-sm.btn-custom {
+    color: #ffffff; /* Цвет текста кнопки */
+    background-color: #8B6C51; /* Цвет фона кнопки */
+    border-color: #8B6C51; /* Цвет рамки кнопки */
+}
+
+.btn.btn-sm.btn-custom:hover {
+    color: #ffffff; /* Цвет текста при наведении */
+    background-color: #6B4F37; /* Цвет фона при наведении */
+    border-color: #6B4F37; /* Цвет рамки при наведении */
+}
+</style>
 
     </style>
 </head>
@@ -45,8 +58,8 @@
         </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="#" class="nav-link px-2 text-secondary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Дом</font></font></a></li>
-          <li><a href="#" class="nav-link px-2 text-white"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Функции</font></font></a></li>
+          <li><a href="{{ url_for('index') }}" class="nav-link px-2 text-secondary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Головна</font></font></a></li>
+          <li><a href="#" class="nav-link px-2 text-white"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Функції</font></font></a></li>
         </ul>
 
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
@@ -65,11 +78,11 @@
         <img src="https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg" alt="мдо" width="32" height="32" class="rounded-circle">
     </a>
     <ul class="dropdown-menu text-small">
-        <li><a class="dropdown-item" href="#">Новый проект...</a></li>
-        <li><a class="dropdown-item" href="#">Настройки</a></li>
-        <li><a class="dropdown-item" href="#">Профиль</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('new_pet') }}">Створити історію</a></li>
+        <li><a class="dropdown-item" href="#">Налаштування</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('profile') }}">Профіль</a></li>
         <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="{{ url_for('logout') }}">выход</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Вийти</a></li>
     </ul>
 </div>
 

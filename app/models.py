@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
 import sqlalchemy as sa
 import sqlalchemy.orm as so
-from typing import Optional
+from typing import Optional, List
 
 
 user_pet = sa.Table(
@@ -20,7 +20,7 @@ class User(UserMixin, db.Model):
     username: so.MappedColumn[str] = so.mapped_column(sa.String(60), unique=True)
     email: so.Mapped[str] = so.mapped_column(sa.String(128), unique=True, index=True)
     password_hash: so.MappedColumn[Optional[str]] = so.mapped_column(sa.String(60))
-    user_pets: so.Mapped['Pet'] = so.relationship(back_populates='author')
+    user_pets: so.Mapped[List['Pet']] = so.relationship('Pet', back_populates='author')
 
     def __repr__(self):
         return f'User: {self.username}'
@@ -50,8 +50,8 @@ class Pet(db.Model):
     age: so.MappedColumn[int]
     breed: so.MappedColumn[str] = so.mapped_column(sa.String(60))
     country: so.MappedColumn[str] = so.mapped_column(sa.String(60))
-    category_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(Category.id))
     category: so.Mapped[Category] = so.relationship(back_populates='pets')
+    category_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(Category.id))
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id))
     author: so.Mapped[User] = so.relationship(back_populates='user_pets')
 
