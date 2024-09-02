@@ -14,16 +14,6 @@ class RegistrationForm(FlaskForm):
         DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
 
-    # def validate_username(self, username):
-    #     user = User.query.filter_by(username=username.data).first()
-    #     if user is not None:
-    #         raise ValidationError('Please use a different username.')
-    #
-    # def validate_email(self, email):
-    #     user = User.query.filter_by(email=email.data).first()
-    #     if user is not None:
-    #         raise ValidationError('Please use a different email address.')
-
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -33,7 +23,7 @@ class LoginForm(FlaskForm):
 
 class PetForm(FlaskForm):
     name = StringField("Ім'я улюбленця", validators=[DataRequired()])
-    description = TextAreaField("Опис", validators=[DataRequired()])
+    description = TextAreaField("Історія", validators=[DataRequired()])
     age = IntegerField("Вік", validators=[DataRequired()])
     breed = StringField("Порода", validators=[DataRequired()])
     country = StringField("Країна", validators=[DataRequired()])
@@ -45,3 +35,8 @@ class PetForm(FlaskForm):
         self.category.choices = [
             (category.id, category.name) for category in db.session.query(Category).order_by(Category.name).all()
         ]
+
+
+class CategoryForm(FlaskForm):
+    name = StringField('Category name', validators=[DataRequired()])
+    submit = SubmitField('Create')
