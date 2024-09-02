@@ -1,43 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <div class="container w-75 mt-3">
-    <h1>Домашня сторінка</h1>
+    <h1 class="mb-3">Збережені історії</h1>
     <div class="row">
-        {% for pet in pets %}
-        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-            <div class="card shadow-sm" style="background-color: #fae4c7; color: black; height: 400px;">
-                <img class="card-img-top" src="{{ url_for('static', filename='dog2.jpg') }}" alt="Описание картинки" style="width: 100%; height: 200px; object-fit: cover;">
-                <div class="card-body d-flex flex-column" style="height: auto;">
-                    <h5 class="card-title" style="margin-bottom: 0;">{{ pet.name }}, {{ pet.age }}, {{ pet.country }}</h5>
-                    <h6 class="card-title" style="margin-top: 5px;">{{ pet.breed }}</h6>
-                    <p class="card-text" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                        {{ pet.description|truncate(150, True, '...') }}
-                    </p>
-                    <div class="mt-auto">
-                        <div class="d-flex">
-                            <a href="{{ url_for('edit_pet', pet_id=pet.id) }}" type="button" class="btn btn-sm"
-                               style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b; margin-right: 5px;"
-                               onmouseover="this.style.backgroundColor='#785b4b'; this.style.color='white'; this.style.borderColor='#785b4b';"
-                               onmouseout="this.style.backgroundColor='transparent'; this.style.color='#785b4b'; this.style.borderColor='#785b4b';">
-                               Вид
-                            </a>
-                            <a href="{{ url_for('edit_pet', pet_id=pet.id) }}" type="button" class="btn btn-sm"
-                               style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b; margin-right: 5px;"
-                               onmouseover="this.style.backgroundColor='#785b4b'; this.style.color='white'; this.style.borderColor='#785b4b';"
-                               onmouseout="this.style.backgroundColor='transparent'; this.style.color='#785b4b'; this.style.borderColor='#785b4b';">
-                               Редагувати
-                            </a>
-                            <form action="{{ url_for('delete_pet', pet_id=pet.id) }}" method="post" style="display: inline;">
-                                <button type="submit" class="btn btn-sm"
-                                        style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b;"
-                                        onmouseover="this.style.backgroundColor='#785b4b'; this.style.color='white'; this.style.borderColor='#785b4b';"
-                                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='#785b4b'; this.style.borderColor='#785b4b';">
-                                    Видалити
-                                </button>
-                            </form>
-                        </div>
+        {% for pet in user_pets %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card shadow-sm d-flex flex-column" style="background-color: #fae4c7; color: black; height: 100%;">
+                <a href="{{ url_for('index') }}" style="display: block;">
+                    <img class="card-img-top" src="{{ url_for('static', filename='dog2.jpg') }}" alt="Описание картинки" style="width: 100%; height: 200px; object-fit: cover;">
+                </a>
+                <div class="card-body d-flex flex-column" style="flex-grow: 1;">
+                    <a href="{{ url_for('index') }}" style="text-decoration: none; color: black;">
+                        <h4 class="card-title" style="margin-bottom: 0;">{{ pet.name }}</h4>
+                        <h6 class="card-title" style="margin-bottom: 0;">02.09.2024 - 15:00</h6>
+                        <p class="card-text" style="overflow: hidden; text-overflow: ellipsis; white-space: normal;">
+                            {{ pet.description|truncate(50, True, '...') }}
+                        </p>
+                    </a>
+                </div>
+                <div class="card-footer mt-auto d-flex justify-content-between align-items-center">
+                    <a href="{{ url_for('profile') }}"  style="color: inherit; text-decoration: none;">
+                        <img src="{{ url_for('static', filename='heart_empty.jpg') }}" alt="Иконка" style="width: 21px; height: 21px;"> 1
+                    </a>
+                    <div class="btn-group" role="group">
+                        <a href="{{ url_for('edit_pet', pet_id=pet.id) }}" type="button" class="btn btn-sm"
+                           style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b; border-radius: 0.25rem 0 0 0.25rem;"
+                           onmouseover="this.style.backgroundColor='#785b4b'; this.style.color='white'; this.style.borderColor='#785b4b';"
+                           onmouseout="this.style.backgroundColor='transparent'; this.style.color='#785b4b'; this.style.borderColor='#785b4b';">
+                           Редагувати
+                        </a>
+                        <form action="{{ url_for('delete_pet', pet_id=pet.id) }}" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-sm"
+                                    style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b; border-radius: 0 0.25rem 0.25rem 0;"
+                                    onmouseover="this.style.backgroundColor='#785b4b'; this.style.color='white'; this.style.borderColor='#785b4b';"
+                                    onmouseout="this.style.backgroundColor='transparent'; this.style.color='#785b4b'; this.style.borderColor='#785b4b';">
+                                Видалити
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+        {% else %}
+            <h3>У вас немає історій</h3>
         {% endfor %}
     </div>
 </div>
+{% endblock %}
