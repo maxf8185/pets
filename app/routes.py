@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, abort, flash
 import sqlalchemy as sa
 from flask_login import logout_user, current_user, login_required, login_user
 from app import app, db
-from .forms import RegistrationForm, LoginForm, PetForm
+from .forms import RegistrationForm, LoginForm, PetForm, CategoryForm
 from app.models import Pet, User, Category
 
 
@@ -101,3 +101,28 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+
+@app.route('/category/new', methods=['POST', 'GET'])
+def new_category():
+    form = CategoryForm()
+    if form.validate_on_submit():
+        category = Category(name=form.name.data)
+        db.session.add(category)
+        db.session.commit()
+        return redirect(url_for('category'))
+    return render_template('create_category.html', form=form)
+
+
+@app.route('/category/<int:category_id>')
+def category_posts(category_id):
+    category = db.session.scalar(sa.select(Category).where(Category.id == category_id))
+    posts_list = db.session.scalars(category.posts.select())
+    return render_template('posts.html', posts=posts_list)
+
+
+@app.route('/category')
+def category():
+    categories = db.session.scalars(sa.select(Category))
+    return render_template('categories.html', categories=categories)

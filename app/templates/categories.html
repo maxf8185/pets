@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container w-75">
+    <h1>All categories <a class="btn btn-outline-danger" href="{{ url_for('new_category') }}">Add a new category</a></h1>
+    <div class="card text-dark bg-danger" style="width: 18rem;">
+        <ul class="list-group list-group-flush bg-danger">
+            {% for category in categories %}
+            <li class="list-group-item bg-warning mb-1">
+                <a class="text-dark" href="{{ url_for('category_posts', category_id=category.id) }}">
+                    {{ category }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
