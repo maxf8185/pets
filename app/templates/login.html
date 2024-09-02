@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container w-25 mt-3">
-    <h1>Login</h1>
-    <form method="post">
+<div class="container w-25 mt-3" style="background-color: rgba(255, 255, 255, 0.8); border-radius:30px; color: white; height: 280px;">
+    <h1 style="color: black;">Login</h1>
+    <form style="color: black;" method="post">
         {{ form.hidden_tag() }}
         <p>
             {{ form.email.label(class="form-label") }}
@@ -19,3 +19,4 @@
     </form>
 </div>
 {% endblock %}
+
