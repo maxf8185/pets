@@ -6,33 +6,33 @@
     <div class="row">
         {% for pet in pets %}
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-            <div class="card shadow-sm d-flex flex-column" style="background-color: #fae4c7; color: black; height: 100%;">
+            <div class="card shadow-sm d-flex flex-column" style="background-color: #fae4c7; color: black; height: 100%; font-size: 0.875rem;">
                 <a href="{{ url_for('index') }}" style="display: block;">
-                    <img class="card-img-top" src="{{ url_for('static', filename='dog2.jpg') }}" alt="Описание картинки" style="width: 100%; height: 200px; object-fit: cover;">
+                    <img class="card-img-top" src="{{ url_for('static', filename='dog2.jpg') }}" alt="Описание картинки" style="width: 100%; height: auto; max-height: 200px; object-fit: cover;">
                 </a>
                 <div class="card-body d-flex flex-column" style="flex-grow: 1;">
                     <a href="{{ url_for('index') }}" style="text-decoration: none; color: black;">
-                        <h4 class="card-title" style="margin-bottom: 0;">{{ pet.name }}</h4>
-                        <h6 class="card-title" style="margin-bottom: 0;">02.09.2024 - 15:00</h6>
-                        <p class="card-text" style="overflow: hidden; text-overflow: ellipsis; white-space: normal;">
+                        <h4 class="card-title" style="margin-bottom: 0; font-size: 1rem;">{{ pet.name }}</h4>
+                        <h6 class="card-title" style="margin-bottom: 0; font-size: 0.875rem;">02.09.2024 - 15:00</h6>
+                        <p class="card-text" style="overflow: hidden; text-overflow: ellipsis; white-space: normal; font-size: 0.75rem;">
                             {{ pet.description|truncate(50, True, '...') }}
                         </p>
                     </a>
                 </div>
                 <div class="card-footer mt-auto d-flex justify-content-between align-items-center">
-                    <a href="{{ url_for('profile') }}"  style="color: inherit; text-decoration: none;">
-                        <img src="{{ url_for('static', filename='heart.jpg') }}" alt="Иконка" style="width: 21px; height: 21px;"> 1
+                    <a href="{{ url_for('profile') }}" style="color: inherit; text-decoration: none; font-size: 0.75rem;">
+                        <img src="{{ url_for('static', filename='heart.jpg') }}" alt="Иконка" style="width: 1.25rem; height: 1.25rem;"> 1
                     </a>
                     <div class="btn-group" role="group">
                         <a href="{{ url_for('edit_pet', pet_id=pet.id) }}" type="button" class="btn btn-sm"
-                           style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b; border-radius: 0.25rem 0 0 0.25rem;"
+                           style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b; border-radius: 0.25rem 0 0 0.25rem; font-size: 0.75rem;"
                            onmouseover="this.style.backgroundColor='#785b4b'; this.style.color='white'; this.style.borderColor='#785b4b';"
                            onmouseout="this.style.backgroundColor='transparent'; this.style.color='#785b4b'; this.style.borderColor='#785b4b';">
                            Редагувати
                         </a>
                         <form action="{{ url_for('delete_pet', pet_id=pet.id) }}" method="post" style="display: inline;">
                             <button type="submit" class="btn btn-sm"
-                                    style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b; border-radius: 0 0.25rem 0.25rem 0;"
+                                    style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b; border-radius: 0 0.25rem 0.25rem 0; font-size: 0.75rem;"
                                     onmouseover="this.style.backgroundColor='#785b4b'; this.style.color='white'; this.style.borderColor='#785b4b';"
                                     onmouseout="this.style.backgroundColor='transparent'; this.style.color='#785b4b'; this.style.borderColor='#785b4b';">
                                 Видалити
@@ -48,5 +48,7 @@
     </div>
 </div>
 {% endblock %}
+
+
 
 

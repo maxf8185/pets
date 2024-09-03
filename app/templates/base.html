@@ -3,100 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <title>Pets</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
         .bg-image {
             background-image: url("{{ url_for('static', filename='image2.jpg') }}");
             background-size: cover; /* или contain, если нужно */
             background-position: center;
-            height: 100vh; /* Высота на весь экран */
             color: white; /* Цвет текста, чтобы контент был виден на фоне */
+        }
+
+        .main-content {
+            min-height: 100vh; /* Убедитесь, что контент занимает минимум высоту экрана */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer {
+            margin-top: auto;
         }
 
         .navbar-custom {
             background-color: #220c01; /* Ваш желаемый цвет */
         }
 
-::-webkit-scrollbar {
-    width: 12px;
-}
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
 
-::-webkit-scrollbar-track {
-    background: #220c01;
-}
+        ::-webkit-scrollbar-track {
+            background: #220c01;
+        }
 
-::-webkit-scrollbar-thumb {
-    background: #77594e;
-    border-radius: 10px;
-}
+        ::-webkit-scrollbar-thumb {
+            background: #77594e;
+            border-radius: 10px;
+        }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #ab8f77;
-}
-<style>
-.btn.btn-sm.btn-custom {
-    color: #ffffff; /* Цвет текста кнопки */
-    background-color: #8B6C51; /* Цвет фона кнопки */
-    border-color: #8B6C51; /* Цвет рамки кнопки */
-}
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ab8f77;
+        }
 
-.btn.btn-sm.btn-custom:hover {
-    color: #ffffff; /* Цвет текста при наведении */
-    background-color: #6B4F37; /* Цвет фона при наведении */
-    border-color: #6B4F37; /* Цвет рамки при наведении */
-}
-</style>
+        .btn.btn-sm.btn-custom {
+            color: #ffffff; /* Цвет текста кнопки */
+            background-color: #8B6C51; /* Цвет фона кнопки */
+            border-color: #8B6C51; /* Цвет рамки кнопки */
+        }
 
+        .btn.btn-sm.btn-custom:hover {
+            color: #ffffff; /* Цвет текста при наведении */
+            background-color: #6B4F37; /* Цвет фона при наведении */
+            border-color: #6B4F37; /* Цвет рамки при наведении */
+        }
+
+        @media (max-width: 768px) {
+            .navbar-custom {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .btn {
+                font-size: 12px; /* уменьшение размера шрифта */
+                padding: 0.25rem 0.5rem; /* уменьшение внутренних отступов */
+            }
+
+            .form-control {
+                font-size: 12px; /* уменьшение размера текста в поле поиска */
+                padding: 0.25rem 0.5rem; /* уменьшение внутренних отступов */
+            }
+
+            .nav-link {
+                font-size: 12px; /* уменьшение размера текста навигационных ссылок */
+                padding: 0.25rem 0.5rem; /* уменьшение внутренних отступов */
+            }
+        }
     </style>
 </head>
 <body>
 <header class="p-3 navbar-custom text-bg-dark">
-    <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Бутстрап"><use xlink:href="#bootstrap"></use></svg>
-        </a>
+    <div class="container-fluid">
+        <div class="d-flex flex-wrap align-items-center justify-content-between">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+            </a>
 
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="{{ url_for('index') }}" class="nav-link px-2 text-secondary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Головна</font></font></a></li>
-          <li><a href="#" class="nav-link px-2 text-white"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Функції</font></font></a></li>
-        </ul>
+            <ul class="nav me-auto mb-2 mb-lg-0">
+                <li><a href="{{ url_for('index') }}" class="nav-link px-1 text-secondary">Головна</a></li>
+                <li><a href="#" class="nav-link px-1 text-white">Функції</a></li>
+            </ul>
 
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-          <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Поиск..." aria-label="Поиск">
-        </form>
+            <form class="d-flex" role="search">
+                <input type="search" class="form-control form-control-dark text-bg-dark me-3" placeholder="Поиск..." aria-label="Поиск" style="max-width: 200px;">
+            </form>
 
-        <div class="text-end">
-            {% if not current_user.is_authenticated %}
-          <button type="button" class="btn btn-outline-light me-2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><a href="{{ url_for('login') }}" style="text-decoration: none; color: inherit;">Авторизоваться</a></font></font></button>
-          <button type="button" class="btn btn-warning"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><a href="{{ url_for('register') }}" style="text-decoration: none; color: inherit;">Зарегистрироваться</a></font></font></button>
+            <div class="text-end ms-1">
+                {% if not current_user.is_authenticated %}
+                <a href="{{ url_for('login') }}" class="btn btn-outline-light me-1">Авторизоваться</a>
+                <a href="{{ url_for('register') }}" class="btn btn-warning me-1">Зарегистрироваться</a>
+                {% else %}
+                <div class="dropdown">
+                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false" style="color: #ffffff;">
+                        <span class="me-2">{{ current_user.username }}</span>
+                        <img src="https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg" alt="Profile" width="32" height="32" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu text-small">
+                        <li><a class="dropdown-item" href="{{ url_for('new_pet') }}">Створити історію</a></li>
+                        <li><a class="dropdown-item" href="#">Налаштування</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('profile') }}">Профіль</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Вийти</a></li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
 
-            {% else %}
-<div class="dropdown text-end">
-    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false" style="color: #ffffff;">
-        <span class="me-2">{{ current_user.username }}</span>
-        <img src="https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg" alt="мдо" width="32" height="32" class="rounded-circle">
-    </a>
-    <ul class="dropdown-menu text-small">
-        <li><a class="dropdown-item" href="{{ url_for('new_pet') }}">Створити історію</a></li>
-        <li><a class="dropdown-item" href="#">Налаштування</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('profile') }}">Профіль</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Вийти</a></li>
-    </ul>
+<div class="bg-image d-flex flex-column main-content">
+    {% block content %}
+    {% endblock %}
+    <div class="footer">
+        <!-- Здесь может быть ваш футер -->
+    </div>
 </div>
 
-
-
-
-            {% endif %}
-        </div>
-      </div>
-    </div>
-  </header>
-<div class="bg-image d-flex">
-{% block content %}
-{% endblock %}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

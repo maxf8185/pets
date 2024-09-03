@@ -103,7 +103,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-
 @app.route('/category/new', methods=['POST', 'GET'])
 def new_category():
     form = CategoryForm()
