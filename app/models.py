@@ -5,6 +5,7 @@ from app import db, login
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 from typing import Optional, List
+from datetime import datetime
 
 
 user_pet = sa.Table(
@@ -21,6 +22,7 @@ class User(UserMixin, db.Model):
     email: so.Mapped[str] = so.mapped_column(sa.String(128), unique=True, index=True)
     password_hash: so.MappedColumn[Optional[str]] = so.mapped_column(sa.String(60))
     user_pets: so.Mapped[List['Pet']] = so.relationship('Pet', back_populates='author')
+    likes = db.relationship('Like', back_populates='user', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f'User: {self.username}'
@@ -57,3 +59,23 @@ class Pet(db.Model):
 
     def __repr__(self):
         return f'Pet: {self.topic}'
+
+
+class Like(db.Model):
+    __tablename__ = 'likes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    story_id = db.Column(db.Integer, db.ForeignKey('story.id'), nullable=False)
+
+    user = db.relationship('User', back_populates='likes')
+    story = db.relationship('Story', back_populates='likes')
+
+
+class Story(db.Model):
+    __tablename__ = 'story'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    likes = db.relationship('Like', back_populates='story', cascade='all, delete-orphan')

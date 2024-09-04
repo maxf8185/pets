@@ -3,7 +3,7 @@ import sqlalchemy as sa
 from flask_login import logout_user, current_user, login_required, login_user
 from app import app, db
 from .forms import RegistrationForm, LoginForm, PetForm, CategoryForm
-from app.models import Pet, User, Category
+from app.models import Pet, User, Category, Story, Like
 
 
 @app.route('/')
@@ -125,3 +125,28 @@ def category_posts(category_id):
 def category():
     categories = db.session.scalars(sa.select(Category))
     return render_template('categories.html', categories=categories)
+
+
+@app.route('/like/<int:story_id>', methods=['POST'])
+@login_required
+def like_story(story_id):
+    story = Story.query.get_or_404(story_id)
+    like = Like.query.filter_by(user_id=current_user.id, story_id=story_id).first()
+    if like:
+        flash('You have already liked this story.')
+        return redirect(url_for('story_detail', story_id=story_id))
+    new_like = Like(user_id=current_user.id, story_id=story_id)
+    db.session.add(new_like)
+    db.session.commit()
+    flash('Story liked!')
+
+    return redirect(url_for('story_detail', story_id=story_id))
+
+
+@app.route('/liked_stories')
+@login_required
+def liked_stories():
+    liked_stories = Story.query.join(Like, Like.story_id == Story.id).filter(Like.user_id == current_user.id).all()
+
+    return render_template('liked_stories.html', liked_stories=liked_stories)
+
