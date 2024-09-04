@@ -40,7 +40,3 @@ class PetForm(FlaskForm):
 class CategoryForm(FlaskForm):
     name = StringField('Category name', validators=[DataRequired()])
     submit = SubmitField('Create')
-
-
-class LikeForm(FlaskForm):
-    submit = SubmitField('Like')
