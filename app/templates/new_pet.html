@@ -1,17 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container w-25 mt-3">
-    <h1>Створити нову історію</h1>
-    <form method="post">
+<div class="container w-25 mt-3" style="background-color: rgba(250, 228, 199, 0.8); border-radius: 30px; color: black; padding: 20px; min-width: 500px; min-height: 665px;">
+    <h1 class="header-text">Створити нову історію</h1>
+    <form method="post" style="color: black;">
         {{ form.hidden_tag() }}
         <p>
             {{ form.name.label(class="form-label") }}
             {{ form.name(class="form-control") }}
-        </p>
-        <p>
-            {{ form.description.label(class="form-label") }}
-            {{ form.description(class="form-control") }}
         </p>
         <p>
             {{ form.age.label(class="form-label") }}
@@ -30,10 +26,36 @@
             {{ form.category(class="form-control") }}
         </p>
         <p>
-            {{ form.submit(class="btn btn-primary mb-3") }}
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control") }}
+        </p>
+        <p>
+            <button type="submit" class="btn btn-primary mb-3" id="submitButton"
+                    style="background-color: #6b5243; border-color: #6b5243; color: #ffffff; padding: 0.5rem 1rem; border-radius: 0.25rem;"
+                    onmouseover="this.style.backgroundColor='#6b5243'; this.style.borderColor='#6b5243';"
+                    onmouseout="this.style.backgroundColor='#785b4b'; this.style.borderColor='#785b4b';">
+                {{ form.submit.label.text }}
+            </button>
         </p>
     </form>
 </div>
+
+<style>
+    /* Изменение стилей для заголовка */
+    .header-text {
+        white-space: nowrap; /* Запрещает перенос текста на новую строку */
+        overflow: hidden;    /* Прячет текст, который не помещается в контейнер */
+        text-overflow: ellipsis; /* Добавляет многоточие, если текст не помещается */
+    }
+
+    /* Изменение стилей для полей ввода при фокусе */
+    .form-control:focus {
+        border-color: #6b5243;
+        box-shadow: 0 0 0 0.2rem rgba(107, 82, 67, 0.25);
+        outline: none;
+    }
+</style>
 {% endblock %}
+
 
 
