@@ -93,19 +93,19 @@
             </a>
 
             <ul class="nav me-auto mb-2 mb-lg-0">
-                <li><a href="{{ url_for('index') }}" class="nav-link px-1 text-secondary">Home</a></li>
+                <li><a href="{{ url_for('index') }}" class="nav-link px-1 text-secondary">Головна</a></li>
                 <li><a href="#" class="nav-link px-1 text-white">Features</a></li>
-                <li><a href="{{ url_for('liked_pets') }}" class="nav-link px-1 text-white">Liked Pets</a></li>
+                <li><a href="{{ url_for('liked_pets') }}" class="nav-link px-1 text-white">Обране</a></li>
             </ul>
 
             <form class="d-flex" role="search">
-                <input type="search" class="form-control form-control-dark text-bg-dark me-3" placeholder="Search..." aria-label="Search" style="max-width: 200px;">
+                <input type="search" class="form-control form-control-dark text-bg-dark me-3" placeholder="Пошук..." aria-label="Search" style="max-width: 200px;">
             </form>
 
             <div class="text-end ms-1">
                 {% if not current_user.is_authenticated %}
-                <a href="{{ url_for('login') }}" class="btn btn-outline-light me-1">Login</a>
-                <a href="{{ url_for('register') }}" class="btn btn-warning me-1">Register</a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-light me-1">Увійти</a>
+                <a href="{{ url_for('register') }}" class="btn btn-warning me-1">Зареєструватись</a>
                 {% else %}
                 <div class="dropdown">
                     <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false" style="color: #ffffff;">
@@ -113,11 +113,11 @@
                         <img src="https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg" alt="Profile" width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="{{ url_for('new_pet') }}">Create Pet</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="{{ url_for('profile') }}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('new_pet') }}">Створити історію</a></li>
+                        <li><a class="dropdown-item" href="#">Налаштування</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('profile') }}">Профіль</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Вийти</a></li>
                     </ul>
                 </div>
                 {% endif %}

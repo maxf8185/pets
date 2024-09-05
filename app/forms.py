@@ -9,16 +9,16 @@ from app.models import Category
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirmed_password = PasswordField('Repeat Password', validators=[
+    password = PasswordField('Пароль', validators=[DataRequired()])
+    confirmed_password = PasswordField('Підтвердіть пароль', validators=[
         DataRequired(), EqualTo('password')])
-    submit = SubmitField('Register')
+    submit = SubmitField('Зареєструватись')
 
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Sign In')
+    password = PasswordField('Пароль', validators=[DataRequired()])
+    submit = SubmitField('Увійти')
 
 
 class PetForm(FlaskForm):
@@ -38,5 +38,5 @@ class PetForm(FlaskForm):
 
 
 class CategoryForm(FlaskForm):
-    name = StringField('Category name', validators=[DataRequired()])
-    submit = SubmitField('Create')
+    name = StringField("Ім'я категорії", validators=[DataRequired()])
+    submit = SubmitField("Створити")

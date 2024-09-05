@@ -1,49 +1,63 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container w-25 mt-3" style="background-color: rgba(255, 255, 255, 0.8); border-radius:30px; color: white; height: 340px;">
-    <h2 style="color: black;">Register</h2>
+<div class="container w-25 mt-3" style="background-color: rgba(250, 228, 199, 0.8); border-radius:30px; color: black; height: 460px; padding: 20px; min-width: 300px;">
+    <h2 style="color: black;">Зареєструватись</h2>
     <form style="color: black;" method="post">
         {{ form.hidden_tag() }}
-        <div class="row mb-3">
-            {{ form.username.label(class="col-sm-3 col-form-label") }}
-            <div class="col-sm-8">
-                {{ form.username(class="form-control") }}
-            </div>
+
+        <div class="mb-3">
+            <label class="form-label">{{ form.username.label.text }}</label>
+            {{ form.username(class="form-control") }}
             {% for error in form.username.errors %}
             <span class="text-danger">{{ error }}</span>
             {% endfor %}
         </div>
-        <div class="row mb-3">
-            {{ form.email.label(class="col-sm-3 col-form-label") }}
-            <div class="col-sm-8">
-                {{ form.email(class="form-control") }}
-            </div>
+
+        <div class="mb-3">
+            <label class="form-label">{{ form.email.label.text }}</label>
+            {{ form.email(class="form-control") }}
             {% for error in form.email.errors %}
             <span class="text-danger">{{ error }}</span>
             {% endfor %}
         </div>
-        <div class="row mb-3">
-            {{ form.password.label(class="col-sm-3 col-form-label") }}
-            <div class="col-sm-8">
-                {{ form.password(class="form-control") }}
-            </div>
+
+        <div class="mb-3">
+            <label class="form-label">{{ form.password.label.text }}</label>
+            {{ form.password(class="form-control") }}
             {% for error in form.password.errors %}
             <span class="text-danger">{{ error }}</span>
             {% endfor %}
         </div>
-        <div class="row mb-3">
-            {{ form.confirmed_password.label(class="col-sm-3 col-form-label") }}
-            <div class="col-sm-8">
-                {{ form.confirmed_password(class="form-control") }}
-            </div>
+
+        <div class="mb-3">
+            <label class="form-label">{{ form.confirmed_password.label.text }}</label>
+            {{ form.confirmed_password(class="form-control") }}
             {% for error in form.confirmed_password.errors %}
             <span class="text-danger">{{ error }}</span>
             {% endfor %}
         </div>
-        <div>
-            {{ form.submit(class="btn btn-primary mb-3") }}
-        </div>
+
+        <p>
+            <button type="submit" class="btn btn-primary mb-3" id="submitButton"
+                    style="background-color: #6b5243; border-color: #6b5243; color: #ffffff; padding: 0.5rem 1rem; border-radius: 0.25rem;"
+                    onmouseover="this.style.backgroundColor='#6b5243'; this.style.borderColor='#6b5243';"
+                    onmouseout="this.style.backgroundColor='#785b4b'; this.style.borderColor='#785b4b';">
+                {{ form.submit.label.text }}
+            </button>
+        </p>
     </form>
 </div>
+
+<style>
+    /* Изменение стилей для полей ввода при фокусе */
+    .form-control:focus {
+        border-color: #6b5243;
+        box-shadow: 0 0 0 0.2rem rgba(107, 82, 67, 0.25);
+        outline: none;
+    }
+</style>
 {% endblock %}
+
+
+

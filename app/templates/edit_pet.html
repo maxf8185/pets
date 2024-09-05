@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container w-25 mt-3" style="background-color: rgba(255, 255, 255, 0.8); border-radius: 30px; color: black; height: 650px;">
-    <h1>Режим редагування</h1>
+<div class="container w-25 mt-3" style="background-color: rgba(250, 228, 199, 0.8); border-radius: 30px; color: black; height: 665px; padding: 20px; min-width: 400px;">
+    <h1 class="header-text">Режим редагування</h1>
     <form method="post" style="color: black;">
         {{ form.hidden_tag() }}
         <p>
@@ -39,64 +39,24 @@
         </p>
     </form>
 </div>
+
 <style>
-    /* Изменение стилей для полей ввода */
+    /* Изменение стилей для заголовка */
+    .header-text {
+        white-space: nowrap; /* Запрещает перенос текста на новую строку */
+        overflow: hidden;    /* Прячет текст, который не помещается в контейнер */
+        text-overflow: ellipsis; /* Добавляет многоточие, если текст не помещается */
+    }
+
+    /* Изменение стилей для полей ввода при фокусе */
     .form-control:focus {
-        border-color: #6b5243; /* Цвет рамки при фокусе */
-        box-shadow: 0 0 0 0.2rem rgba(107, 82, 67, 0.25); /* Цвет тени при фокусе */
-        outline: none; /* Убираем стандартное обводку при фокусе */
-    }
-
-    /* Изменение стилей для кнопки при наведении */
-    .btn-primary:hover {
-        background-color: #6b5243; /* Цвет фона при наведении */
-        border-color: #6b5243; /* Цвет рамки при наведении */
-    }
-
-    /* Изменение стилей для селект-поля и опций */
-    .form-control {
-        border-color: #6b5243; /* Цвет рамки по умолчанию */
-        color: black; /* Цвет текста в поле */
-        background-color: #ffffff; /* Цвет фона поля */
-        appearance: none; /* Убирает стандартные стили браузера */
-        -webkit-appearance: none; /* Для браузеров на базе Webkit */
-        -moz-appearance: none; /* Для Firefox */
-    }
-
-    .form-control option {
-        background-color: #ffffff; /* Цвет фона для опций в селекте */
-        color: black; /* Цвет текста для опций в селекте */
-    }
-
-    .form-control::-ms-expand {
-        display: none; /* Убираем стрелку в IE */
-    }
-
-    .custom-select-wrapper {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-    }
-
-    .custom-select {
-        display: inline-block;
-        width: 100%;
-        background-color: #ffffff;
-        border: 1px solid #6b5243;
-        border-radius: 0.25rem;
-        color: black;
-        padding: 0.5rem 1rem;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-    }
-
-    .custom-select:focus {
         border-color: #6b5243;
         box-shadow: 0 0 0 0.2rem rgba(107, 82, 67, 0.25);
+        outline: none;
     }
 </style>
 {% endblock %}
+
 
 
 
