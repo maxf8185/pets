@@ -93,9 +93,18 @@
             </a>
 
             <ul class="nav me-auto mb-2 mb-lg-0">
-                <li><a href="{{ url_for('index') }}" class="nav-link px-1 text-secondary">Головна</a></li>
-                <li><a href="#" class="nav-link px-1 text-white">Features</a></li>
-                <li><a href="{{ url_for('liked_pets') }}" class="nav-link px-1 text-white">Обране</a></li>
+                <li class="nav-item">
+                    <a href="{{ url_for('index') }}" class="nav-link px-1 text-white">
+                        <img src="{{ url_for('static', filename='home.jpg') }}" alt="Иконка" style="width: 21px; height: 21px;"/>
+                        <span class="ms-2">Головна</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('liked_pets') }}" class="nav-link px-1 text-white">
+                        <img src="{{ url_for('static', filename='heart-2.jpg') }}" alt="Иконка" style="width: 21px; height: 21px;"/>
+                        <span class="ms-2">Обране</span>
+                    </a>
+                </li>
             </ul>
 
             <form class="d-flex" role="search">
@@ -138,3 +147,4 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
+
