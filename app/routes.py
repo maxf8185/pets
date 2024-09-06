@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, abort, flash
 import sqlalchemy as sa
 from flask_login import logout_user, current_user, login_required, login_user
 from app import app, db
-from .forms import RegistrationForm, LoginForm, PetForm, CategoryForm
+from .forms import RegistrationForm, LoginForm, PetForm, CategoryForm, EditName
 from app.models import Pet, User, Category, Like
 
 
@@ -13,11 +13,23 @@ def index():
     return render_template('index.html', pets=pets)
 
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
+    form = EditName(obj=current_user)
     user_pets = current_user.user_pets
-    return render_template('profile.html', user_pets=user_pets)
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        db.session.commit()
+        return redirect(url_for('profile'))
+    return render_template('profile.html', form=form, user_pets=user_pets)
+
+
+@app.route('/my_stories')
+@login_required
+def my_stories():
+    user_pets = current_user.user_pets
+    return render_template('my_stories.html', user_pets=user_pets)
 
 
 @app.route('/pet/edit/<int:pet_id>', methods=['GET', 'POST'])

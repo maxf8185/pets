@@ -21,6 +21,11 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Увійти')
 
 
+class EditName(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    submit = SubmitField('Зберегти зміни')
+
+
 class PetForm(FlaskForm):
     name = StringField("Ім'я улюбленця", validators=[DataRequired()])
     description = TextAreaField("Історія", validators=[DataRequired()])

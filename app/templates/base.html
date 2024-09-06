@@ -136,13 +136,14 @@ html, body {
             <small class="d-block hidden-text" style="font-size: 10px;">Обране</small>
         </a>
     </li>
-    <li class="nav-item text-center d-flex align-items-center">
-        <span class="border-end mx-2" style="height: 24px; border-color: rgba(255, 255, 255) !important;"></span>
-        <a href="{{ url_for('profile') }}" class="nav-link px-1 text-white">
-            <img src="{{ url_for('static', filename='list.jpg') }}" alt="Иконка" class="nav-icon" />
-            <small class="d-block hidden-text" style="font-size: 10px;">Мої історії</small>
-        </a>
-    </li>
+<li class="nav-item text-center d-flex align-items-center">
+    <span class="border-end mx-2" style="height: 24px; border-color: rgba(255, 255, 255) !important;"></span>
+    <a href="{{ url_for('my_stories') }}" class="nav-link px-1 text-white">
+        <img src="{{ url_for('static', filename='list.jpg') }}" alt="Иконка" class="nav-icon" style="width: 24px; height: 24px;" />
+        <small class="d-block hidden-text" style="font-size: 10px;">Мої історії</small>
+    </a>
+</li>
+
     <li class="nav-item text-center d-flex align-items-center">
         <span class="border-end mx-2" style="height: 24px; border-color: rgba(255, 255, 255) !important;"></span>
         <a href="{{ url_for('new_pet') }}" class="nav-link px-1 text-white">

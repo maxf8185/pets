@@ -1,40 +1,110 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container w-75 mt-3">
-    <h1 class="mb-3" style="background-color: rgba(250, 228, 199, 0.8); border-radius: 30px; color: black; height: 100px; padding: 20px; max-width: 350px;">Створені історії</h1>
+<style>
+    .fixed-left {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .scrollable-right {
+        height: 100vh;
+        overflow-y: auto;
+    }
+html, body {
+    overflow: hidden; /* Отключает прокрутку на всей странице */
+    min-height: 100vh; /* Обеспечивает высоту на всю высоту видимого окна */
+    margin: 0; /* Убирает отступы */
+}
+</style>
+<div class="container w-75 mt-3"
+     style="background-color: rgba(250, 228, 199, 0.8); border-radius: 30px; color: black; padding: 20px; max-width: 900px; max-height: 700px;">
+    <div class="row">
+        <!-- Левая колонка (60%) -->
+        <div class="col-md-6 fixed-left">
+            <div class="card" style="width: 25rem; background-color: #fae4c7; color: black; font-size: 0.875rem;">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        style="display: block; padding: 0; border: none; background: none;">
+                    <img class="card-img-top" src="https://avatars.githubusercontent.com/u/162161132?v=4"
+                         alt="Описание картинки"
+                         style="width: 100%; height: auto; max-height: 400px; object-fit: cover;">
+                </button>
+
+
+                <div class="card-body">
+                    <p style="margin: 0; line-height: 0.5; font-size: 0.75rem;">Username</p>
+                    <div style="display: flex; align-items: center; margin: 0.5rem 0;">
+                        <h3 style="margin: 0; line-height: 1.2; margin-right: 0.35rem;">
+                            {{ current_user.username }}
+                        </h3>
+                        <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                                data-bs-target="#UsernameModal"
+                                style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none;">
+                            <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                                 height="12" style="vertical-align: middle; margin-top: -35px;">
+                        </button>
+                    </div>
+
+
+                    <p style="margin: 1rem 0 0; line-height: 0.5; font-size: 0.75rem;" class="card-title">Email</p>
+                    <h5 style="margin: 0.5rem 0 1rem 0; line-height: 1.2;">{{ current_user.email }}</h5>
+                    <p style="margin: 0; line-height: 1.2; font-size: 0.75rem;" class="card-title">Password</p>
+                    <h5 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">********</h5>
+                    <div style="display: flex; align-items: center;">
+                        <img src="{{ url_for('static', filename='heart.jpg') }}" alt="Иконка"
+                             style="width: 14px; height: 14px; margin-right: 0.3rem; vertical-align: middle; margin-top: 5px;">
+                        <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">Додано до обраного: 0</h6>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <img src="{{ url_for('static', filename='book.jpg') }}" alt="Иконка"
+                             style="width: 14px; height: 14px; margin-right: 0.3rem; vertical-align: middle; margin-top: 5px;">
+                        <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">Створено історій: {{ current_user.user_pets | length }}</h6>
+                    </div>
+                                        <div style="display: flex; align-items: center;">
+                        <img src="{{ url_for('static', filename='comment.jpg') }}" alt="Иконка"
+                             style="width: 14px; height: 14px; margin-right: 0.3rem; vertical-align: middle; margin-top: 5px;">
+                        <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">Написано коментарів: 0</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- Правая колонка (40%) -->
+<div class="container col-md-6 scrollable-right" style="max-height: 650px;">
     <div class="row">
         {% for pet in user_pets %}
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-            <div class="card shadow-sm d-flex flex-column" style="background-color: #fae4c7; color: black; height: 100%;">
+        <div class="col-md-12 mb-4 d-flex">
+            <div class="card shadow-sm"
+                 style="background-color: #fae4c7; color: black; width: 100%; font-size: 0.875rem;">
                 <a href="{{ url_for('index') }}" style="display: block;">
-                    <img class="card-img-top" src="{{ url_for('static', filename='dog2.jpg') }}" alt="Описание картинки" style="width: 100%; height: 200px; object-fit: cover;">
+                    <img class="card-img-top" src="{{ url_for('static', filename='dog2.jpg') }}" alt="Описание картинки"
+                         style="width: 100%; height: auto; max-height: 200px; object-fit: cover;">
                 </a>
                 <div class="card-body d-flex flex-column" style="flex-grow: 1;">
                     <a href="{{ url_for('index') }}" style="text-decoration: none; color: black;">
-                        <h4 class="card-title" style="margin-bottom: 0;">{{ pet.name }}</h4>
-                        <h6 class="card-title" style="margin-bottom: 0;">02.09.2024 - 15:00</h6>
-                        <p class="card-text" style="overflow: hidden; text-overflow: ellipsis; white-space: normal;">
+                        <h4 class="card-title" style="margin-bottom: 0; font-size: 1rem;">{{ pet.name }}</h4>
+                        <h6 class="card-title" style="margin-bottom: 0; font-size: 0.875rem;">02.09.2024 - 15:00</h6>
+                        <p class="card-text"
+                           style="overflow: hidden; text-overflow: ellipsis; white-space: normal; font-size: 0.75rem;">
                             {{ pet.description|truncate(50, True, '...') }}
                         </p>
                     </a>
                 </div>
-                <div class="card-footer mt-auto d-flex justify-content-between align-items-center">
-<a href="{{ url_for('profile') }}" class="icon-link">
-    <img src="{{ url_for('static', filename='heart_empty.jpg') }}" alt="Иконка" class="icon-img"> <span class="icon-text">0</span>
-</a>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <a href="{{ url_for('my_stories') }}" class="icon-link" style="text-decoration: none; color: #785b4b;">
+                        <img src="{{ url_for('static', filename='heart_empty.jpg') }}" alt="Иконка" style="width: 20px; height: 20px;"> <span>0</span>
+                    </a>
                     <div class="btn-group" role="group">
-                        <a href="{{ url_for('edit_pet', pet_id=pet.id) }}" type="button" class="btn btn-sm"
-                           style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b; border-radius: 0.25rem 0 0 0.25rem;"
-                           onmouseover="this.style.backgroundColor='#785b4b'; this.style.color='white'; this.style.borderColor='#785b4b';"
-                           onmouseout="this.style.backgroundColor='transparent'; this.style.color='#785b4b'; this.style.borderColor='#785b4b';">
-                           Редагувати
+                        <a href="{{ url_for('edit_pet', pet_id=pet.id) }}" type="button" class="btn"
+                           style="border-radius: 0.25rem; font-size: 0.75rem; border: 1px solid #785b4b; color: #785b4b; background-color: transparent; padding: 0.25rem 0.5rem;">
+                            Редагувати
                         </a>
-                        <form action="{{ url_for('delete_pet', pet_id=pet.id) }}" method="post" style="display: inline;">
-                            <button type="submit" class="btn btn-sm"
-                                    style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b; border-radius: 0 0.25rem 0.25rem 0;"
-                                    onmouseover="this.style.backgroundColor='#785b4b'; this.style.color='white'; this.style.borderColor='#785b4b';"
-                                    onmouseout="this.style.backgroundColor='transparent'; this.style.color='#785b4b'; this.style.borderColor='#785b4b';">
+                        <form action="{{ url_for('delete_pet', pet_id=pet.id) }}" method="post"
+                              style="display: inline;">
+                            <button type="submit" class="btn"
+                                    style="border-radius: 0.25rem; font-size: 0.75rem; border: 1px solid #785b4b; color: #785b4b; background-color: transparent; padding: 0.25rem 0.5rem;">
                                 Видалити
                             </button>
                         </form>
@@ -43,56 +113,61 @@
             </div>
         </div>
         {% else %}
-            <h3>У вас немає історій</h3>
+        <h3>Історій поки немає. Будь ласка, додайте історії.</h3>
         {% endfor %}
     </div>
 </div>
-<style>
-    .icon-link {
-        display: flex;
-        align-items: center;
-        text-decoration: none; /* Убираем подчеркивание */
-        color: inherit; /* Отключаем стандартный синий цвет */
-        font-size: 0.75rem;
-    }
 
-    .icon-link:visited, .icon-link:active, .icon-link:hover {
-        text-decoration: none; /* Убираем подчеркивание для всех состояний */
-        color: inherit; /* Сохраняем цвет неизменным при всех состояниях */
-    }
 
-    .icon-img {
-        width: 1.25rem;
-        height: 1.25rem;
-        opacity: 0.7;
-        transition: transform 0.3s ease, opacity 0.3s ease;
-    }
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Модальное окно</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="https://avatars.githubusercontent.com/u/162161132?v=4" alt="Описание картинки"
+                     class="img-fluid">
+                <!-- Добавьте сюда контент модального окна -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary">Сохранить изменения</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    .icon-text {
-        margin-left: 0.25rem;
-        transition: margin-left 0.3s ease;
-        color: inherit; /* Цвет текста не меняется */
-    }
+<div class="modal fade" id="UsernameModal" tabindex="-1" aria-labelledby="UsernameModalLabel" aria-hidden="true"
+     style="color: black;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: #fae4c7; color: #000000; border-radius: 15px !important;">
+            <div class="modal-header"
+                 style="background-color: #6b5243; color: #ffffff; border-top-left-radius: 15px !important; border-top-right-radius: 15px !important;">
+                <h1 class="modal-title fs-5" id="UsernameModalLabel">Редагування</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="filter: invert(1);"></button>
+            </div>
+            <div class="modal-body"
+                 style="background-color: #fae4c7; color: #000000; border-bottom-left-radius: 15px !important; border-bottom-right-radius: 15px !important;">
+                <form method="post" action="{{ url_for('profile') }}" style="color: black;">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        <label class="col-form-label">Новий username</label>
+                        {{ form.username(class="form-control") }}
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-3" id="submitButton"
+                            style="background-color: #6b5243; border-color: #6b5243; color: #ffffff; padding: 0.5rem 1rem; border-radius: 0.25rem;"
+                            onmouseover="this.style.backgroundColor='#6b5243'; this.style.borderColor='#6b5243';"
+                            onmouseout="this.style.backgroundColor='#785b4b'; this.style.borderColor='#785b4b';">
+                        Зберегти зміни
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-    .icon-link:hover .icon-img {
-        opacity: 1;
-        transform: scale(1.1);
-    }
 
-    .icon-link:hover .icon-text {
-        margin-left: 0.5rem;
-    }
-</style>
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
