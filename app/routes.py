@@ -32,6 +32,33 @@ def my_stories():
     return render_template('my_stories.html', user_pets=user_pets)
 
 
+@app.route('/pet/profile/<int:pet_id>', methods=['GET', 'POST'])
+@login_required
+def profile_pet(pet_id):
+    pet = db.session.scalar(sa.select(Pet).where(Pet.id == pet_id))
+    form = PetForm(obj=current_user)
+    if not pet:
+        flash('Pet not found', category='danger')
+        return redirect(url_for('index'))
+    return render_template('profile_pet.html', form=form, pet=pet)
+
+
+@app.route('/pet/new', methods=['GET', 'POST'])
+@login_required
+def new_pet():
+    form = PetForm()
+    if form.validate_on_submit():
+        category = db.session.get(Category, form.category.data)
+        pet = Pet(name=form.name.data, description=form.description.data,
+                  age=form.age.data, breed=form.breed.data,
+                  country=form.country.data, category=category,
+                  user_id=current_user.id)
+        db.session.add(pet)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('new_pet.html', form=form)
+
+
 @app.route('/pet/edit/<int:pet_id>', methods=['GET', 'POST'])
 @login_required
 def edit_pet(pet_id):
@@ -55,22 +82,6 @@ def edit_pet(pet_id):
         flash('You successfully edited the pet', category='success')
         return redirect(url_for('index'))
     return render_template('edit_pet.html', form=form)
-
-
-@app.route('/pet/new', methods=['GET', 'POST'])
-@login_required
-def new_pet():
-    form = PetForm()
-    if form.validate_on_submit():
-        category = db.session.get(Category, form.category.data)
-        pet = Pet(name=form.name.data, description=form.description.data,
-                  age=form.age.data, breed=form.breed.data,
-                  country=form.country.data, category=category,
-                  user_id=current_user.id)
-        db.session.add(pet)
-        db.session.commit()
-        return redirect(url_for('index'))
-    return render_template('new_pet.html', form=form)
 
 
 @app.route('/delete_pet/<int:pet_id>', methods=['POST'])
@@ -154,6 +165,7 @@ def like_pet(pet_id):
     db.session.commit()
     flash('Pet liked!')
     return redirect(url_for('pet_detail', pet_id=pet_id))
+
 
 @app.route('/liked_pets')
 @login_required
