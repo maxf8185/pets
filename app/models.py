@@ -4,16 +4,24 @@ from app import db, login
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 from typing import Optional, List
+from sqlalchemy import Column, DateTime
 from datetime import datetime
 
+
+user_pet_likes = sa.Table(
+    'user_pet_likes',
+    db.Model.metadata,
+    sa.Column('user_id', sa.Integer, sa.ForeignKey('user.id'), primary_key=True),
+    sa.Column('pet_id', sa.Integer, sa.ForeignKey('pet.id'), primary_key=True)
+)
 
 class User(UserMixin, db.Model):
     id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
     username: so.MappedColumn[str] = so.mapped_column(sa.String(60), unique=True)
-    email: so.Mapped[str] = so.mapped_column(sa.String(128), unique=True, index=True)
+    email: so.MappedColumn[str] = so.mapped_column(sa.String(128), unique=True, index=True)
     password_hash: so.MappedColumn[Optional[str]] = so.mapped_column(sa.String(60))
     user_pets: so.Mapped[List['Pet']] = so.relationship('Pet', back_populates='author')
-
+    voted_pets: so.Mapped[List['Pet']] = so.relationship('Pet', secondary=user_pet_likes, back_populates='voters')
 
     def __repr__(self):
         return f'User: {self.username}'
@@ -24,17 +32,14 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
-
 
 class Category(db.Model):
     id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
     name: so.MappedColumn[str] = so.mapped_column(sa.String(60))
     pets: so.Mapped[List['Pet']] = so.relationship('Pet', back_populates='category')
-
 
 class Pet(db.Model):
     id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
@@ -47,10 +52,8 @@ class Pet(db.Model):
     category_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(Category.id))
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id))
     author: so.Mapped[User] = so.relationship('User', back_populates='user_pets')
-
+    voters: so.Mapped[List[User]] = so.relationship('User', secondary=user_pet_likes, back_populates='voted_pets')
+    votes: so.MappedColumn[int] = so.mapped_column(sa.Integer, default=0)
+    creation_date = Column(DateTime, default=datetime.utcnow)
     def __repr__(self):
         return f'Pet: {self.name}'
-
-
-
-

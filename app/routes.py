@@ -3,7 +3,8 @@ import sqlalchemy as sa
 from flask_login import logout_user, current_user, login_required, login_user
 from app import app, db
 from .forms import RegistrationForm, LoginForm, PetForm, CategoryForm, EditName
-from app.models import Pet, User, Category
+from app.models import Pet, User, Category, user_pet_likes
+
 
 
 @app.route('/')
@@ -85,6 +86,7 @@ def edit_pet(pet_id):
 
 
 @app.route('/delete_pet/<int:pet_id>', methods=['POST'])
+@login_required
 def delete_pet(pet_id):
     pet = Pet.query.get_or_404(pet_id)
     db.session.delete(pet)
@@ -129,6 +131,7 @@ def logout():
 
 
 @app.route('/category/new', methods=['POST', 'GET'])
+@login_required
 def new_category():
     form = CategoryForm()
     if form.validate_on_submit():
@@ -142,13 +145,55 @@ def new_category():
 @app.route('/category/<int:category_id>')
 def category_posts(category_id):
     category = db.session.scalar(sa.select(Category).where(Category.id == category_id))
-    posts_list = db.session.scalars(category.posts.select())
+    posts_list = db.session.scalars(sa.select(Pet).where(Pet.category_id == category_id)).all()
     return render_template('posts.html', posts=posts_list)
 
 
 @app.route('/category')
 def category():
-    categories = db.session.scalars(sa.select(Category))
+    categories = db.session.scalars(sa.select(Category)).all()
     return render_template('categories.html', categories=categories)
 
 
+@app.route('/vote/<int:pet_id>', methods=['POST'])
+@login_required
+def vote_pet(pet_id):
+    pet = Pet.query.get_or_404(pet_id)
+    user = current_user
+
+    # Перевіряємо, чи вже голосував цей користувач
+    if user in pet.voters:
+        flash('Ви вже проголосували за цю тварину.')
+        return redirect(url_for('index'))
+
+    # Додаємо користувача до списку голосуючих і оновлюємо кількість голосів
+    pet.voters.append(user)
+    pet.votes += 1
+    db.session.commit()
+    flash('Ваш голос був зарахований!')
+    return redirect(url_for('index'))
+
+
+@app.route('/voted_pets')
+@login_required
+def voted_pets():
+    # Отримання проголосованих петицій для користувача
+    voted_pets = get_voted_pets_for_user(current_user.id)
+    return render_template('voted_pets.html', voted_pets=voted_pets)
+
+
+def get_voted_pets_for_user(user_id):
+    # Отримати користувача за його ідентифікатором
+    user = User.query.get(user_id)
+
+    if user:
+        # Повернути список петицій, за які користувач проголосував
+        return user.voted_pets
+    else:
+        # Повернути пустий список, якщо користувач не знайдений
+        return []
+
+@app.route('/pet/<int:pet_id>')
+def pet_details(pet_id):
+    pet = Pet.query.get_or_404(pet_id)
+    return render_template('pet_details.html', pet=pet)
