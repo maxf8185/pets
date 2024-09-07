@@ -16,13 +16,13 @@ def index():
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    form = EditName(obj=current_user)
+    form_name = EditName(obj=current_user)
     user_pets = current_user.user_pets
-    if form.validate_on_submit():
-        current_user.username = form.username.data
+    if form_name.validate_on_submit():
+        current_user.username = form_name.username.data
         db.session.commit()
         return redirect(url_for('profile'))
-    return render_template('profile.html', form=form, user_pets=user_pets)
+    return render_template('profile.html', form_name=form_name, user_pets=user_pets)
 
 
 @app.route('/my_stories')

@@ -14,6 +14,7 @@ liked_pets = sa.Table(
     sa.Column('pet_id', sa.Integer, sa.ForeignKey('pet.id'), primary_key=True)
 )
 
+
 class User(UserMixin, db.Model):
     id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
     username: so.MappedColumn[str] = so.mapped_column(sa.String(60), unique=True)
@@ -21,7 +22,6 @@ class User(UserMixin, db.Model):
     password_hash: so.MappedColumn[Optional[str]] = so.mapped_column(sa.String(60))
     user_pets: so.Mapped[List['Pet']] = so.relationship('Pet', back_populates='author')
     likes: so.Mapped[List['Like']] = so.relationship('Like', back_populates='user')
-
 
     def __repr__(self):
         return f'User: {self.username}'
