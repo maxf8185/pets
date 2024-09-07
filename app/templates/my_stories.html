@@ -2,9 +2,11 @@
 
 {% block content %}
 <div class="container w-75 mt-3">
+    {% if user_pets %}
     <h1 class="mb-3"
         style="background-color: rgba(250, 228, 199, 0.8); border-radius: 30px; color: black; height: 100px; padding: 20px; max-width: 350px;">
         Створені історії</h1>
+        {% endif %}
     <div class="row">
         {% for pet in user_pets %}
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
@@ -49,11 +51,22 @@
             </div>
         </div>
         {% else %}
-        <h3>У вас немає історій</h3>
+<div class="container w-25 mt-3" style="background-color: rgba(250, 228, 199, 0.8); border-radius: 30px; color: black; padding: 20px; min-width: 200px; min-height: 300px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div style="position: relative; text-align: center;">
+        <a href="{{ url_for('new_pet') }}" style="position: absolute; left: 50%; transform: translateX(-50%); top: 100px;">
+            <img src="{{ url_for('static', filename='plus-2.jpg') }}" alt="Описание картинки" style="width: 50px; transition: transform 0.3s ease;">
+        </a>
+        <h3 style="margin: 0;">Історій поки немає. Будь ласка, додайте історії.</h3>
+    </div>
+</div>
+
         {% endfor %}
     </div>
 </div>
 <style>
+    a:hover img {
+    transform: scale(1.1); /* Увеличивает изображение на 20% */
+}
     .icon-link {
         display: flex;
         align-items: center;
