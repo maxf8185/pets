@@ -161,6 +161,7 @@ def vote_pet(pet_id):
     pet = Pet.query.get_or_404(pet_id)
     user = current_user
 
+<<<<<<< HEAD
     # Перевіряємо, чи вже голосував цей користувач
     if user in pet.voters:
         flash('Ви вже проголосували за цю тварину.')
@@ -175,6 +176,10 @@ def vote_pet(pet_id):
 
 
 @app.route('/voted_pets')
+=======
+
+@app.route('/liked_pets')
+>>>>>>> 2c94125d089203190e245e6e3f76bd34651ebec1
 @login_required
 def voted_pets():
     # Отримання проголосованих петицій для користувача

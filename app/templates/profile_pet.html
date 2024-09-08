@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .fixed-left {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .scrollable-right {
+        height: 100vh;
+        overflow-y: auto;
+    }
+html, body {
+    overflow: hidden; /* Отключает прокрутку на всей странице */
+    min-height: 100vh; /* Обеспечивает высоту на всю высоту видимого окна */
+    margin: 0; /* Убирает отступы */
+}
+    .icon-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none; /* Убираем подчеркивание */
+        color: inherit; /* Отключаем стандартный синий цвет */
+        font-size: 0.75rem;
+    }
+
+    .icon-link:visited, .icon-link:active, .icon-link:hover {
+        text-decoration: none; /* Убираем подчеркивание для всех состояний */
+        color: inherit; /* Сохраняем цвет неизменным при всех состояниях */
+    }
+
+    .icon-img {
+        width: 1.25rem;
+        height: 1.25rem;
+        opacity: 0.7;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .icon-text {
+        margin-left: 0.25rem;
+        transition: margin-left 0.3s ease;
+        color: inherit; /* Цвет текста не меняется */
+    }
+
+    .icon-link:hover .icon-img {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    .icon-link:hover .icon-text {
+        margin-left: 0.5rem;
+    }
+        a:hover img {
+        transform: scale(1.1); /* Увеличение картинки на 10% */
+    }
+        /* Стили для увеличения картинки при наведении */
+    .card-img-top {
+        transition: transform 0.3s ease;
+    }
+
+    .card-img-top:hover {
+        transform: none; /* Убираем увеличение */
+    }
+
+    .icon-link:hover .icon-img {
+        transform: scale(1.1); /* Увеличение иконки на 10% при наведении */
+    }
+</style>
+<div class="container w-75 mt-3"
+     style="background-color: rgba(250, 228, 199, 0.8); border-radius: 30px; color: black; padding: 20px; max-width: 900px; max-height: 700px;">
+    <div class="row">
+        <!-- Левая колонка (60%) -->
+        <div class="col-md-6 fixed-left">
+            <div class="card" style="width: 25rem; background-color: #fae4c7; color: black; font-size: 0.875rem;">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        style="display: block; padding: 0; border: none; background: none;">
+                    <img class="card-img-top" src="{{ url_for('static', filename='dog2.jpg') }}"
+                         alt="Описание картинки"
+                         style="width: 100%; height: auto; max-height: 400px; object-fit: cover;">
+                </button>
+
+
+                <div class="card-body">
+                    <p style="margin: 0; line-height: 0.5; font-size: 0.75rem;">{{ form.name.label(class="form-label") }}</p>
+                    <div style="display: flex; align-items: center; margin: 0.5rem 0;">
+                        <h3 style="margin: 0; line-height: 1.2; margin-right: 0.35rem;">
+                            {{ pet.name }}
+                        </h3>
+                        <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                                data-bs-target="#UsernameModal"
+                                style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none;">
+                            <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                                 height="12" style="vertical-align: middle; margin-top: -35px;">
+                        </button>
+                    </div>
+
+
+                    <p style="margin: 1rem 0 0; line-height: 0.5; font-size: 0.75rem;" class="card-title">{{ form.name.label(class="form-label") }}</p>
+                    <h5 style="margin: 0.5rem 0 1rem 0; line-height: 1.2;">{{ current_user.email }}</h5>
+                    <p style="margin: 0; line-height: 1.2; font-size: 0.75rem;" class="card-title">Password</p>
+                    <div style="display: flex; align-items: center; margin: 0.2rem 0;">
+                        <h5 style="margin: 0; line-height: 1.2; margin-right: 0.35rem;">
+                            **********
+                        </h5>
+                        <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                                data-bs-target="#PasswordModal"
+                                style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none;">
+                            <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                                 height="12" style="vertical-align: middle; margin-top: -35px;">
+                        </button>
+                    </div>
+<div style="display: flex; align-items: center;">
+    <a href="#" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+        <img src="{{ url_for('static', filename='heart.jpg') }}" alt="Иконка"
+             style="width: 14px; height: 14px; margin-right: 0.3rem; vertical-align: middle; margin-top: 5px;">
+        <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">Додано до обраного: 0</h6>
+    </a>
+</div>
+<div style="display: flex; align-items: center;">
+    <a href="{{ url_for('my_stories') }}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+        <img src="{{ url_for('static', filename='book.jpg') }}" alt="Иконка"
+             style="width: 14px; height: 14px; margin-right: 0.3rem; vertical-align: middle; margin-top: 5px;">
+        <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">Створено історій: {{ current_user.user_pets | length }}</h6>
+    </a>
+</div>
+                    <div style="display: flex; align-items: center;">
+                        <img src="{{ url_for('static', filename='comment.jpg') }}" alt="Иконка"
+                             style="width: 14px; height: 14px; margin-right: 0.3rem; vertical-align: middle; margin-top: 5px;">
+                        <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">Написано коментарів: 0</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- Правая колонка (40%) -->
+<div class="container col-md-6 scrollable-right" style="max-height: 650px;">
+</div>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Модальное окно</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="https://avatars.githubusercontent.com/u/162161132?v=4" alt="Описание картинки"
+                     class="img-fluid">
+                <!-- Добавьте сюда контент модального окна -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary">Сохранить изменения</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="UsernameModal" tabindex="-1" aria-labelledby="UsernameModalLabel" aria-hidden="true"
+     style="color: black;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: #fae4c7; color: #000000; border-radius: 15px !important;">
+            <div class="modal-header"
+                 style="background-color: #6b5243; color: #ffffff; border-top-left-radius: 15px !important; border-top-right-radius: 15px !important;">
+                <h1 class="modal-title fs-5" id="UsernameModalLabel">Редагування</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="filter: invert(1);"></button>
+            </div>
+            <div class="modal-body"
+                 style="background-color: #fae4c7; color: #000000; border-bottom-left-radius: 15px !important; border-bottom-right-radius: 15px !important;">
+                <form method="post" action="{{ url_for('profile') }}" style="color: black;">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        <label class="col-form-label">Новий username</label>
+                        {{ form.name(class="form-control") }}
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-3" id="submitButton"
+                            style="background-color: #6b5243; border-color: #6b5243; color: #ffffff; padding: 0.5rem 1rem; border-radius: 0.25rem;"
+                            onmouseover="this.style.backgroundColor='#6b5243'; this.style.borderColor='#6b5243';"
+                            onmouseout="this.style.backgroundColor='#785b4b'; this.style.borderColor='#785b4b';">
+                        Зберегти зміни
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="PasswordModal" tabindex="-1" aria-labelledby="PasswordModalLabel" aria-hidden="true"
+     style="color: black;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: #fae4c7; color: #000000; border-radius: 15px !important;">
+            <div class="modal-header"
+                 style="background-color: #6b5243; color: #ffffff; border-top-left-radius: 15px !important; border-top-right-radius: 15px !important;">
+                <h1 class="modal-title fs-5" id="PasswordModalLabel">Редагування</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="filter: invert(1);"></button>
+            </div>
+            <div class="modal-body"
+                 style="background-color: #fae4c7; color: #000000; border-bottom-left-radius: 15px !important; border-bottom-right-radius: 15px !important;">
+                <form method="post" action="{{ url_for('profile') }}" style="color: black;">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        <label class="col-form-label">Старий пароль</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Новий пароль</label>
+                        <input type="text" class="form-control" id="recipient-name2">
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-3" id="submitButton2"
+                            style="background-color: #6b5243; border-color: #6b5243; color: #ffffff; padding: 0.5rem 1rem; border-radius: 0.25rem;"
+                            onmouseover="this.style.backgroundColor='#6b5243'; this.style.borderColor='#6b5243';"
+                            onmouseout="this.style.backgroundColor='#785b4b'; this.style.borderColor='#785b4b';">
+                        Зберегти зміни
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
