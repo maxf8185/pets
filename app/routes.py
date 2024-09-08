@@ -155,45 +155,40 @@ def category():
     return render_template('categories.html', categories=categories)
 
 
-@app.route('/vote/<int:pet_id>', methods=['POST'])
+@app.route('/like/<int:pet_id>', methods=['POST'])
 @login_required
-def vote_pet(pet_id):
+def like_pet(pet_id):
     pet = Pet.query.get_or_404(pet_id)
     user = current_user
-
-<<<<<<< HEAD
     # Перевіряємо, чи вже голосував цей користувач
-    if user in pet.voters:
+    if user in pet.likers:
         flash('Ви вже проголосували за цю тварину.')
         return redirect(url_for('index'))
 
     # Додаємо користувача до списку голосуючих і оновлюємо кількість голосів
-    pet.voters.append(user)
-    pet.votes += 1
+    pet.likers.append(user)
+    pet.likes += 1
     db.session.commit()
     flash('Ваш голос був зарахований!')
     return redirect(url_for('index'))
 
 
-@app.route('/voted_pets')
-=======
 
 @app.route('/liked_pets')
->>>>>>> 2c94125d089203190e245e6e3f76bd34651ebec1
 @login_required
-def voted_pets():
+def liked_pets():
     # Отримання проголосованих петицій для користувача
-    voted_pets = get_voted_pets_for_user(current_user.id)
-    return render_template('voted_pets.html', voted_pets=voted_pets)
+    liked_pets = get_liked_pets_for_user(current_user.id)
+    return render_template('liked_pets.html', liked_pets=liked_pets)
 
 
-def get_voted_pets_for_user(user_id):
+def get_liked_pets_for_user(user_id):
     # Отримати користувача за його ідентифікатором
     user = User.query.get(user_id)
 
     if user:
         # Повернути список петицій, за які користувач проголосував
-        return user.voted_pets
+        return user.liked_pets
     else:
         # Повернути пустий список, якщо користувач не знайдений
         return []

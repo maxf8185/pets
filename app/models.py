@@ -21,7 +21,7 @@ class User(UserMixin, db.Model):
     email: so.MappedColumn[str] = so.mapped_column(sa.String(128), unique=True, index=True)
     password_hash: so.MappedColumn[Optional[str]] = so.mapped_column(sa.String(60))
     user_pets: so.Mapped[List['Pet']] = so.relationship('Pet', back_populates='author')
-    voted_pets: so.Mapped[List['Pet']] = so.relationship('Pet', secondary=user_pet_likes, back_populates='voters')
+    liked_pets: so.Mapped[List['Pet']] = so.relationship('Pet', secondary=user_pet_likes, back_populates='likers')
 
     def __repr__(self):
         return f'User: {self.username}'
@@ -52,8 +52,8 @@ class Pet(db.Model):
     category_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(Category.id))
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id))
     author: so.Mapped[User] = so.relationship('User', back_populates='user_pets')
-    voters: so.Mapped[List[User]] = so.relationship('User', secondary=user_pet_likes, back_populates='voted_pets')
-    votes: so.MappedColumn[int] = so.mapped_column(sa.Integer, default=0)
+    likers: so.Mapped[List[User]] = so.relationship('User', secondary=user_pet_likes, back_populates='liked_pets')
+    likes: so.MappedColumn[int] = so.mapped_column(sa.Integer, default=0)
     creation_date = Column(DateTime, default=datetime.utcnow)
     def __repr__(self):
         return f'Pet: {self.name}'
