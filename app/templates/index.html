@@ -3,83 +3,112 @@
 {% block content %}
 <div class="container w-75 mt-3">
     <div class="text-container">
+        {% if pets %}
         <h1 class="mb-3"
             style="background-color: rgba(250, 228, 199, 0.8); border-radius: 30px; color: black; height: 100px; padding: 20px; max-width: 400px;">
             Домашня сторінка</h1>
-    </div>
-    <div class="row">
-        {% for pet in pets %}
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-            <div class="card shadow-sm d-flex flex-column"
-                 style="background-color: #fae4c7; color: black; height: 100%; font-size: 0.875rem;">
-                <a href="{{ url_for('index') }}" style="display: block;">
-                    <img class="card-img-top" src="{{ url_for('static', filename='dog2.jpg') }}" alt="Описание картинки"
-                         style="width: 100%; height: auto; max-height: 200px; object-fit: cover;">
-                </a>
-                <div class="card-body d-flex flex-column" style="flex-grow: 1;">
-                    <a href="{{ url_for('index') }}" style="text-decoration: none; color: black;">
-                        <h4 class="card-title" style="margin-bottom: 0; font-size: 1rem;">{{ pet.name }}</h4>
-                        <h6 class="card-title" style="margin-bottom: 0; font-size: 0.875rem;">{{ pet.creation_date.strftime('%d.%m.%Y - %H:%M') }}</h6>
-                        <p class="card-text"
-                           style="overflow: hidden; text-overflow: ellipsis; white-space: normal; font-size: 0.75rem;">
-                            {{ pet.description|truncate(50, True, '...') }}
-                        </p>
+        {% endif %}
+        <div class="row">
+            {% for pet in pets %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                <div class="card shadow-sm d-flex flex-column"
+                     style="background-color: #fae4c7; color: black; height: 100%; font-size: 0.875rem;">
+                    <a href="{{ url_for('profile_pet', pet_id=pet.id) }}" style="display: block;">
+                        <img class="card-img-top" src="{{ url_for('static', filename='dog2.jpg') }}"
+                             alt="Описание картинки"
+                             style="width: 100%; height: auto; max-height: 200px; object-fit: cover;">
                     </a>
-                </div>
-                <div class="card-footer mt-auto d-flex align-items-center">
-                    <form action="{{ url_for('like_pet', pet_id=pet.id) }}" method="post" style="display: inline;">
-                        <button type="submit" class="btn btn-sm"
-                                style="background-color: #fae4c7; border: none; border-radius: 50%; width: 2rem; height: 2rem; padding: 0; display: flex; align-items: center; justify-content: center;"
-                                onmouseover="this.style.backgroundColor='#f8b6b2';"
-                                onmouseout="this.style.backgroundColor='#fae4c7';">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#785b4b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
-                        </button>
-                    </form>
-                    <span class="ml-2" style="font-size: 0.75rem; color: #785b4b;">{{ pet.likes }} збереження</span>
+                    <div class="card-body d-flex flex-column" style="flex-grow: 1;">
+                        <a href="{{ url_for('index') }}" style="text-decoration: none; color: black;">
+                            <h4 class="card-title" style="margin-bottom: 0; font-size: 1rem;">{{ pet.name }}</h4>
+                            <h6 class="card-title" style="margin-bottom: 0; font-size: 0.875rem;">{{
+                                pet.creation_date.strftime('%d.%m.%Y - %H:%M') }}</h6>
+                            <p class="card-text"
+                               style="overflow: hidden; text-overflow: ellipsis; white-space: normal; font-size: 0.75rem;">
+                                {{ pet.description|truncate(50, True, '...') }}
+                            </p>
+                        </a>
+                    </div>
+                    <div class="card-footer mt-auto d-flex justify-content-between align-items-center">
+                        <form action="{{ url_for('like_pet', pet_id=pet.id) }}" method="post" class="d-inline">
+                            <button type="submit" class="icon-link" style="border: none; background: none;">
+                                {% if current_user.id in pet.likers|map(attribute='id')|list %}
+                                <img src="{{ url_for('static', filename='heart.jpg') }}" alt="Иконка" class="icon-img">
+                                {% else %}
+                                <img src="{{ url_for('static', filename='heart_empty.jpg') }}" alt="Иконка"
+                                     class="icon-img">
+                                {% endif %}
+                                <span class="icon-text">{{ pet.likes }}</span>
+                            </button>
+                        </form>
+                        <form action="{{ url_for('delete_pet', pet_id=pet.id) }}" method="post"
+                              style="display: inline;">
+                            <button type="submit" class="btn btn-sm"
+                                    style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b; border-radius: 0.5rem; font-size: 0.75rem; padding: 0.25rem 0.5rem;"
+                                    onmouseover="this.style.backgroundColor='#785b4b'; this.style.color='white'; this.style.borderColor='#785b4b';"
+                                    onmouseout="this.style.backgroundColor='transparent'; this.style.color='#785b4b'; this.style.borderColor='#785b4b';">
+                                Видалити
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
+            {% else %}
+            <div class="container w-25 mt-3"
+                 style="background-color: rgba(250, 228, 199, 0.8); border-radius: 30px; color: black; padding: 20px; min-width: 200px; min-height: 300px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div style="position: relative; text-align: center;">
+                    <a href="{{ url_for('new_pet') }}"
+                       style="position: absolute; left: 50%; transform: translateX(-50%); top: 100px;">
+                        <img src="{{ url_for('static', filename='plus-2.jpg') }}" alt="Описание картинки"
+                             class="hover-img" style="width: 50px; transition: transform 0.3s ease;">
+                    </a>
+                    <h3 style="margin: 0;">Історій поки немає. Будь першим, напиши свою.</h3>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        {% else %}
-        <h3>Історій поки немає. Будь першим, напиши свою</h3>
-        {% endfor %}
     </div>
-</div>
-<style>
-    .icon-link {
-        display: flex;
-        align-items: center;
-        text-decoration: none; /* Убираем подчеркивание */
-        color: inherit; /* Отключаем стандартный синий цвет */
-        font-size: 0.75rem;
-    }
+    <style>
+        .hover-img:hover {
+            transform: scale(1.1);
+        }
 
-    .icon-link:visited, .icon-link:active, .icon-link:hover {
-        text-decoration: none; /* Убираем подчеркивание для всех состояний */
-        color: inherit; /* Сохраняем цвет неизменным при всех состояниях */
-    }
+            .icon-link {
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                color: inherit;
+                font-size: 0.75rem;
+            }
 
-    .icon-img {
-        width: 1.25rem;
-        height: 1.25rem;
-        opacity: 0.7;
-        transition: transform 0.3s ease, opacity 0.3s ease;
-    }
+            .icon-link:visited, .icon-link:active, .icon-link:hover {
+                text-decoration: none;
+                color: inherit;
+            }
 
-    .icon-text {
-        margin-left: 0.25rem;
-        transition: margin-left 0.3s ease;
-        color: inherit; /* Цвет текста не меняется */
-    }
+            .icon-img {
+                width: 1.25rem;
+                height: 1.25rem;
+                opacity: 0.9;
+                transition: transform 0.3s ease, opacity 0.3s ease;
+            }
 
-    .icon-link:hover .icon-img {
-        opacity: 1;
-        transform: scale(1.1);
-    }
+            .icon-text {
+                margin-left: 0.25rem;
+                transition: margin-left 0.3s ease;
+                color: inherit;
+            }
 
-    .icon-link:hover .icon-text {
-        margin-left: 0.5rem;
-    }
-</style>
-{% endblock %}
+            .icon-link:hover .icon-img {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+
+            .icon-link:hover .icon-text {
+                margin-left: 0.5rem;
+            }
+    </style>
+    {% endblock %}
+
 
 

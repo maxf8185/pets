@@ -2,9 +2,9 @@ from flask import render_template, redirect, url_for, request, abort, flash
 import sqlalchemy as sa
 from flask_login import logout_user, current_user, login_required, login_user
 from app import app, db
-from .forms import RegistrationForm, LoginForm, PetForm, CategoryForm, EditName
+from .forms import RegistrationForm, LoginForm, PetForm, CategoryForm, EditName, EditNamePet, EditAgePet, EditBreedPet, EditCountryPet, EditCategoryPet, EditDescriptionPet
 from app.models import Pet, User, Category, user_pet_likes
-
+import os
 
 
 @app.route('/')
@@ -37,11 +37,39 @@ def my_stories():
 @login_required
 def profile_pet(pet_id):
     pet = db.session.scalar(sa.select(Pet).where(Pet.id == pet_id))
-    form = PetForm(obj=current_user)
     if not pet:
         flash('Pet not found', category='danger')
-        return redirect(url_for('index'))
-    return render_template('profile_pet.html', form=form, pet=pet)
+        return redirect(url_for('profile_pet', pet_id=pet_id))
+    form = PetForm(obj=pet)
+    form_name = EditNamePet(obj=pet)
+    form_age = EditAgePet(obj=pet)
+    form_breed = EditBreedPet(obj=pet)
+    form_country = EditCountryPet(obj=pet)
+    form_category = EditCategoryPet(obj=pet)
+    form_description = EditDescriptionPet(obj=pet)
+    if form_name.validate_on_submit():
+        pet.name = form_name.name.data
+        pet.description = form.description.data
+        pet.age = form.age.data
+        pet.breed = form.breed.data
+        pet.country = form.country.data
+        category = db.session.scalar(sa.select(Category).where(Category.id == form.category.data))
+        if category:
+            pet.category = category
+        db.session.commit()
+    return render_template('profile_pet.html', form=form,
+                           form_name=form_name, form_age=form_age,
+                           form_breed=form_breed, form_country=form_country,
+                           form_category=form_category, form_description=form_description,
+                           pet=pet)
+
+
+@app.template_filter('get_image')
+def get_image(country):
+    filename = f'{country.replace(" ", "_").lower()}.jpg'
+    if os.path.exists(os.path.join(app.static_folder, 'flags', filename)):
+        return f'flags/{filename}'
+    return 'flags/flag.jpg'
 
 
 @app.route('/pet/new', methods=['GET', 'POST'])
@@ -155,23 +183,23 @@ def category():
     return render_template('categories.html', categories=categories)
 
 
-@app.route('/like/<int:pet_id>', methods=['POST'])
-@login_required
+@app.route('/like_pet/<int:pet_id>', methods=['POST'])
 def like_pet(pet_id):
     pet = Pet.query.get_or_404(pet_id)
-    user = current_user
-    # Перевіряємо, чи вже голосував цей користувач
-    if user in pet.likers:
-        flash('Ви вже проголосували за цю тварину.')
-        return redirect(url_for('index'))
 
-    # Додаємо користувача до списку голосуючих і оновлюємо кількість голосів
-    pet.likers.append(user)
-    pet.likes += 1
+    # Check if user has already liked the pet
+    if current_user in pet.likers:
+        # Remove like
+        pet.likers.remove(current_user)
+        pet.likes -= 1
+    else:
+        # Add like
+        pet.likers.append(current_user)
+        pet.likes += 1
+
     db.session.commit()
-    flash('Ваш голос був зарахований!')
-    return redirect(url_for('index'))
 
+    return redirect(url_for('index'))
 
 
 @app.route('/liked_pets')
@@ -193,7 +221,3 @@ def get_liked_pets_for_user(user_id):
         # Повернути пустий список, якщо користувач не знайдений
         return []
 
-@app.route('/pet/<int:pet_id>')
-def pet_details(pet_id):
-    pet = Pet.query.get_or_404(pet_id)
-    return render_template('pet_details.html', pet=pet)

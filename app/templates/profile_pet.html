@@ -2,6 +2,7 @@
 
 {% block content %}
 <style>
+
     .fixed-left {
         position: sticky;
         top: 0;
@@ -34,7 +35,7 @@ html, body {
     .icon-img {
         width: 1.25rem;
         height: 1.25rem;
-        opacity: 0.7;
+        opacity: 0.9;
         transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
@@ -67,161 +68,382 @@ html, body {
     .icon-link:hover .icon-img {
         transform: scale(1.1); /* Увеличение иконки на 10% при наведении */
     }
+
 </style>
 <div class="container w-75 mt-3"
-     style="background-color: rgba(250, 228, 199, 0.8); border-radius: 30px; color: black; padding: 20px; max-width: 900px; max-height: 700px;">
+     style="background-color: rgba(250, 228, 199, 0.8); border-radius: 30px; color: black; padding: 20px; max-width: 900px; max-height: 730px;">
     <div class="row">
         <!-- Левая колонка (60%) -->
-        <div class="col-md-6 fixed-left">
-            <div class="card" style="width: 25rem; background-color: #fae4c7; color: black; font-size: 0.875rem;">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                        style="display: block; padding: 0; border: none; background: none;">
-                    <img class="card-img-top" src="{{ url_for('static', filename='dog2.jpg') }}"
-                         alt="Описание картинки"
-                         style="width: 100%; height: auto; max-height: 400px; object-fit: cover;">
+<div class="flex-shrink-0" style="width: 60%; overflow: hidden; height: 100%;">
+    <div class="card"
+         style="width: 25rem; background-color: #fae4c7; color: black; font-size: 0.875rem; height: 700px; display: flex; flex-direction: column;">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                style="display: block; padding: 0; border: none; background: none; width: 100%;">
+            <img class="card-img-top" src="{{ url_for('static', filename='dog2.jpg') }}"
+                 alt="Описание картинки"
+                 style="width: 100%; height: auto; max-height: 300px; object-fit: cover;">
+        </button>
+
+        <div class="card-body" style="overflow: hidden; flex: 1; max-height: 700px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <p style="margin: 0; line-height: 0.5; font-size: 0.75rem;">
+                    {{ form.name.label(class="form-label") }}
+                </p>
+                <p style="margin: 0; margin-top: -8px; line-height: 0.5; font-size: 0.75rem;">
+                    {{ pet.creation_date.strftime('%d.%m.%Y - %H:%M') }}
+                </p>
+            </div>
+
+            <div style="display: flex; align-items: center; margin: 0.5rem 0;">
+                <h3 style="margin: 0; line-height: 1.2; margin-right: 0.35rem;">
+                    {{ pet.name }}
+                </h3>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                        data-bs-target="#NameModal"
+                        style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none; margin-left: 5px;">
+                    <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                         height="12" style="vertical-align: middle; margin-top: -35px;">
                 </button>
+            </div>
 
+            <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                <img src="{{ url_for('static', filename='age.jpg') }}" alt="Иконка"
+                     style="width: 18px; height: 18px; margin-right: 0.3rem; vertical-align: middle;">
+                <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">{{ form.age.label(class="form-label") }}: {{ pet.age }}</h6>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                        data-bs-target="#AgeModal"
+                        style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none; margin-left: 5px;">
+                    <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                         height="12" style="vertical-align: middle; margin-top: -35px;">
+                </button>
+            </div>
 
-                <div class="card-body">
-                    <p style="margin: 0; line-height: 0.5; font-size: 0.75rem;">{{ form.name.label(class="form-label") }}</p>
-                    <div style="display: flex; align-items: center; margin: 0.5rem 0;">
-                        <h3 style="margin: 0; line-height: 1.2; margin-right: 0.35rem;">
-                            {{ pet.name }}
-                        </h3>
-                        <button type="button" class="btn btn-link" data-bs-toggle="modal"
-                                data-bs-target="#UsernameModal"
-                                style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none;">
-                            <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
-                                 height="12" style="vertical-align: middle; margin-top: -35px;">
-                        </button>
-                    </div>
+            <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                <img src="{{ url_for('static', filename='breed.jpg') }}" alt="Иконка"
+                     style="width: 18px; height: 18px; margin-right: 0.3rem; vertical-align: middle;">
+                <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">{{ form.breed.label(class="form-label") }}: {{ pet.breed }}</h6>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                        data-bs-target="#BreedModal"
+                        style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none; margin-left: 5px;">
+                    <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                         height="12" style="vertical-align: middle; margin-top: -35px;">
+                </button>
+            </div>
 
+            <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                <img src="{{ url_for('static', filename='category.jpg') }}" alt="Иконка"
+                     style="width: 18px; height: 18px; margin-right: 0.3rem; vertical-align: middle;">
+                <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">{{ form.category.label(class="form-label") }}: {{ pet.category.name }}</h6>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                        data-bs-target="#CategoryModal"
+                        style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none; margin-left: 5px;">
+                    <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                         height="12" style="vertical-align: middle; margin-top: -35px;">
+                </button>
+            </div>
 
-                    <p style="margin: 1rem 0 0; line-height: 0.5; font-size: 0.75rem;" class="card-title">{{ form.name.label(class="form-label") }}</p>
-                    <h5 style="margin: 0.5rem 0 1rem 0; line-height: 1.2;">{{ current_user.email }}</h5>
-                    <p style="margin: 0; line-height: 1.2; font-size: 0.75rem;" class="card-title">Password</p>
-                    <div style="display: flex; align-items: center; margin: 0.2rem 0;">
-                        <h5 style="margin: 0; line-height: 1.2; margin-right: 0.35rem;">
-                            **********
-                        </h5>
-                        <button type="button" class="btn btn-link" data-bs-toggle="modal"
-                                data-bs-target="#PasswordModal"
-                                style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none;">
-                            <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
-                                 height="12" style="vertical-align: middle; margin-top: -35px;">
-                        </button>
-                    </div>
-<div style="display: flex; align-items: center;">
-    <a href="#" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
-        <img src="{{ url_for('static', filename='heart.jpg') }}" alt="Иконка"
-             style="width: 14px; height: 14px; margin-right: 0.3rem; vertical-align: middle; margin-top: 5px;">
-        <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">Додано до обраного: 0</h6>
-    </a>
+            <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                <img src="{{ url_for('static', filename=pet.country|get_image) }}"
+                     alt="Иконка"
+                     style="width: 18px; height: 18px; margin-right: 0.3rem; vertical-align: middle;">
+                <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">{{ form.country.label(class="form-label") }}: {{ pet.country }}</h6>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                        data-bs-target="#CountryModal"
+                        style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none; margin-left: 5px;">
+                    <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                         height="12" style="vertical-align: middle; margin-top: -35px;">
+                </button>
+            </div>
+
+            <p style="margin: 0rem 0 0; line-height: 0.5; font-size: 0.75rem;" class="card-title">Опис</p>
+            <div style="position: relative; margin-top: 1rem;">
+                <p style="margin: 0; line-height: 2; font-size: 0.75rem; padding: 1rem; border: 1px solid #ccc; border-radius: 5px; background-color: #fff;
+                          height: 120px; overflow: auto; /* фиксированная высота и прокрутка при переполнении */
+                          -ms-overflow-style: none; /* скрыть полосу прокрутки в Internet Explorer и Edge */
+                          scrollbar-width: none; /* скрыть полосу прокрутки в Firefox */
+                          }
+                          /* скрыть полосу прокрутки в Webkit-браузерах (Chrome, Safari) */
+                          ::-webkit-scrollbar {
+                            display: none;
+                          }
+                ">
+                    {{ pet.description }}
+                </p>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                        data-bs-target="#DescriptionModal"
+                        style="position: absolute; top: -10px; right: -10px; border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none;">
+                    <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                         height="12" style="vertical-align: middle; margin-top: -35px;">
+                </button>
+            </div>
+        </div>
+
+        <div class="card-footer mt-auto d-flex justify-content-between align-items-center">
+    <form action="{{ url_for('like_pet', pet_id=pet.id) }}" method="post" class="d-inline">
+        <button type="submit" class="icon-link" style="border: none; background: none;">
+            {% if current_user.id in pet.likers|map(attribute='id')|list %}
+            <img src="{{ url_for('static', filename='heart.jpg') }}" alt="Иконка" class="icon-img">
+            {% else %}
+            <img src="{{ url_for('static', filename='heart_empty.jpg') }}" alt="Иконка" class="icon-img">
+            {% endif %}
+            <span class="icon-text">{{ pet.likes }}</span>
+        </button>
+    </form>
+    <form action="{{ url_for('delete_pet', pet_id=pet.id) }}" method="post" style="display: inline;">
+        <button type="submit" class="btn btn-sm"
+                style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b; border-radius: 0.5rem; font-size: 0.75rem; padding: 0.25rem 0.5rem;"
+                onmouseover="this.style.backgroundColor='#785b4b'; this.style.color='white'; this.style.borderColor='#785b4b';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#785b4b'; this.style.borderColor='#785b4b';">
+            Видалити
+        </button>
+    </form>
 </div>
-<div style="display: flex; align-items: center;">
-    <a href="{{ url_for('my_stories') }}" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
-        <img src="{{ url_for('static', filename='book.jpg') }}" alt="Иконка"
-             style="width: 14px; height: 14px; margin-right: 0.3rem; vertical-align: middle; margin-top: 5px;">
-        <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">Створено історій: {{ current_user.user_pets | length }}</h6>
-    </a>
+
+    </div>
 </div>
-                    <div style="display: flex; align-items: center;">
-                        <img src="{{ url_for('static', filename='comment.jpg') }}" alt="Иконка"
-                             style="width: 14px; height: 14px; margin-right: 0.3rem; vertical-align: middle; margin-top: 5px;">
-                        <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">Написано коментарів: 0</h6>
+
+
+
+
+
+        <!-- Правая колонка (40%) -->
+        <div class="container col-md-6 scrollable-right" style="max-height: 650px;">
+        </div>
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Модальное окно</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="https://avatars.githubusercontent.com/u/162161132?v=4" alt="Описание картинки"
+                             class="img-fluid">
+                        <!-- Добавьте сюда контент модального окна -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="button" class="btn btn-primary">Сохранить изменения</button>
                     </div>
                 </div>
             </div>
         </div>
 
-<!-- Правая колонка (40%) -->
-<div class="container col-md-6 scrollable-right" style="max-height: 650px;">
-</div>
+
+        <!-- ИМЯ ПИТОМЦА -->
 
 
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Модальное окно</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <img src="https://avatars.githubusercontent.com/u/162161132?v=4" alt="Описание картинки"
-                     class="img-fluid">
-                <!-- Добавьте сюда контент модального окна -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-primary">Сохранить изменения</button>
+        <div class="modal fade" id="NameModal" tabindex="-1" aria-labelledby="NameModalLabel" aria-hidden="true"
+             style="color: black;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content"
+                     style="background-color: #fae4c7; color: #000000; border-radius: 15px !important;">
+                    <div class="modal-header"
+                         style="background-color: #6b5243; color: #ffffff; border-top-left-radius: 15px !important; border-top-right-radius: 15px !important;">
+                        <h1 class="modal-title fs-5" id="NameModalLabel">Редагування</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                style="filter: invert(1);"></button>
+                    </div>
+                    <div class="modal-body"
+                         style="background-color: #fae4c7; color: #000000; border-bottom-left-radius: 15px !important; border-bottom-right-radius: 15px !important;">
+                        <form method="post" action="{{ url_for('profile_pet', pet_id=pet.id) }}"
+                              style="color: black;">
+                            {{ form_name.hidden_tag() }}
+                            <div class="mb-3">
+                                <label class="col-form-label">Нове ім'я</label>
+                                {{ form_name.name(class="form-control") }}
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-3" id="submitButton"
+                                    style="background-color: #6b5243; border-color: #6b5243; color: #ffffff; padding: 0.5rem 1rem; border-radius: 0.25rem;"
+                                    onmouseover="this.style.backgroundColor='#6b5243'; this.style.borderColor='#6b5243';"
+                                    onmouseout="this.style.backgroundColor='#785b4b'; this.style.borderColor='#785b4b';">
+                                Зберігти зміни
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="modal fade" id="UsernameModal" tabindex="-1" aria-labelledby="UsernameModalLabel" aria-hidden="true"
-     style="color: black;">
+
+        <!-- ВОЗРАСТ ПИТОМЦА -->
+
+
+        <div class="modal fade" id="AgeModal" tabindex="-1" aria-labelledby="AgeModalLabel" aria-hidden="true"
+             style="color: black;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content"
+                     style="background-color: #fae4c7; color: #000000; border-radius: 15px !important;">
+                    <div class="modal-header"
+                         style="background-color: #6b5243; color: #ffffff; border-top-left-radius: 15px !important; border-top-right-radius: 15px !important;">
+                        <h1 class="modal-title fs-5" id="AgeModalLabel">Редагування</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                style="filter: invert(1);"></button>
+                    </div>
+                    <div class="modal-body"
+                         style="background-color: #fae4c7; color: #000000; border-bottom-left-radius: 15px !important; border-bottom-right-radius: 15px !important;">
+                        <form method="post" action="{{ url_for('profile_pet', pet_id=pet.id) }}"
+                              style="color: black;">
+                            {{ form_age.hidden_tag() }}
+                            <div class="mb-3">
+                                <label class="col-form-label">Новий вік</label>
+                                {{ form_age.age(class="form-control") }}
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-3" id="submitButton2"
+                                    style="background-color: #6b5243; border-color: #6b5243; color: #ffffff; padding: 0.5rem 1rem; border-radius: 0.25rem;"
+                                    onmouseover="this.style.backgroundColor='#6b5243'; this.style.borderColor='#6b5243';"
+                                    onmouseout="this.style.backgroundColor='#785b4b'; this.style.borderColor='#785b4b';">
+                                Зберігти зміни
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ПОРОДА ПИТОМЦА -->
+
+
+        <div class="modal fade" id="BreedModal" tabindex="-1" aria-labelledby="BreedModalLabel" aria-hidden="true"
+             style="color: black;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content"
+                     style="background-color: #fae4c7; color: #000000; border-radius: 15px !important;">
+                    <div class="modal-header"
+                         style="background-color: #6b5243; color: #ffffff; border-top-left-radius: 15px !important; border-top-right-radius: 15px !important;">
+                        <h1 class="modal-title fs-5" id="BreedModalLabel">Редагування</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                style="filter: invert(1);"></button>
+                    </div>
+                    <div class="modal-body"
+                         style="background-color: #fae4c7; color: #000000; border-bottom-left-radius: 15px !important; border-bottom-right-radius: 15px !important;">
+                        <form method="post" action="{{ url_for('profile_pet', pet_id=pet.id) }}"
+                              style="color: black;">
+                            {{ form_breed.hidden_tag() }}
+                            <div class="mb-3">
+                                <label class="col-form-label">Нова порода</label>
+                                {{ form_breed.breed(class="form-control") }}
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-3" id="submitButton3"
+                                    style="background-color: #6b5243; border-color: #6b5243; color: #ffffff; padding: 0.5rem 1rem; border-radius: 0.25rem;"
+                                    onmouseover="this.style.backgroundColor='#6b5243'; this.style.borderColor='#6b5243';"
+                                    onmouseout="this.style.backgroundColor='#785b4b'; this.style.borderColor='#785b4b';">
+                                Зберігти зміни
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- СТРАНА ПИТОМЦА -->
+
+
+        <div class="modal fade" id="CountryModal" tabindex="-1" aria-labelledby="CountryModalLabel"
+             aria-hidden="true"
+             style="color: black;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content"
+                     style="background-color: #fae4c7; color: #000000; border-radius: 15px !important;">
+                    <div class="modal-header"
+                         style="background-color: #6b5243; color: #ffffff; border-top-left-radius: 15px !important; border-top-right-radius: 15px !important;">
+                        <h1 class="modal-title fs-5" id="CountryModalLabel">Редагування</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                style="filter: invert(1);"></button>
+                    </div>
+                    <div class="modal-body"
+                         style="background-color: #fae4c7; color: #000000; border-bottom-left-radius: 15px !important; border-bottom-right-radius: 15px !important;">
+                        <form method="post" action="{{ url_for('profile_pet', pet_id=pet.id) }}"
+                              style="color: black;">
+                            {{ form_country.hidden_tag() }}
+                            <div class="mb-3">
+                                <label class="col-form-label">Нова країна</label>
+                                {{ form_country.country(class="form-control") }}
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-3" id="submitButton4"
+                                    style="background-color: #6b5243; border-color: #6b5243; color: #ffffff; padding: 0.5rem 1rem; border-radius: 0.25rem;"
+                                    onmouseover="this.style.backgroundColor='#6b5243'; this.style.borderColor='#6b5243';"
+                                    onmouseout="this.style.backgroundColor='#785b4b'; this.style.borderColor='#785b4b';">
+                                Зберігти зміни
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- КАТЕГОРИЯ ПИТОМЦА -->
+
+
+        <div class="modal fade" id="CategoryModal" tabindex="-1" aria-labelledby="CategoryModalLabel"
+             aria-hidden="true"
+             style="color: black;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content"
+                     style="background-color: #fae4c7; color: #000000; border-radius: 15px !important;">
+                    <div class="modal-header"
+                         style="background-color: #6b5243; color: #ffffff; border-top-left-radius: 15px !important; border-top-right-radius: 15px !important;">
+                        <h1 class="modal-title fs-5" id="CategoryModalLabel">Редагування</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                style="filter: invert(1);"></button>
+                    </div>
+                    <div class="modal-body"
+                         style="background-color: #fae4c7; color: #000000; border-bottom-left-radius: 15px !important; border-bottom-right-radius: 15px !important;">
+                        <form method="post" action="{{ url_for('profile_pet', pet_id=pet.id) }}"
+                              style="color: black;">
+                            {{ form_category.hidden_tag() }}
+                            <div class="mb-3">
+                                <label class="col-form-label">Нова категорія</label>
+                                {{ form_category.category(class="form-control") }}
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-3" id="submitButton5"
+                                    style="background-color: #6b5243; border-color: #6b5243; color: #ffffff; padding: 0.5rem 1rem; border-radius: 0.25rem;"
+                                    onmouseover="this.style.backgroundColor='#6b5243'; this.style.borderColor='#6b5243';"
+                                    onmouseout="this.style.backgroundColor='#785b4b'; this.style.borderColor='#785b4b';">
+                                Зберігти зміни
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ОПИСАНИЕ ПИТОМЦА -->
+
+
+<div class="modal fade" id="DescriptionModal" tabindex="-1" aria-labelledby="DescriptionModalLabel" aria-hidden="true" style="color: black;">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="background-color: #fae4c7; color: #000000; border-radius: 15px !important;">
-            <div class="modal-header"
-                 style="background-color: #6b5243; color: #ffffff; border-top-left-radius: 15px !important; border-top-right-radius: 15px !important;">
-                <h1 class="modal-title fs-5" id="UsernameModalLabel">Редагування</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        style="filter: invert(1);"></button>
+            <div class="modal-header" style="background-color: #6b5243; color: #ffffff; border-top-left-radius: 15px !important; border-top-right-radius: 15px !important;">
+                <h1 class="modal-title fs-5" id="DescriptionModalLabel">Редагування</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
             </div>
-            <div class="modal-body"
-                 style="background-color: #fae4c7; color: #000000; border-bottom-left-radius: 15px !important; border-bottom-right-radius: 15px !important;">
-                <form method="post" action="{{ url_for('profile') }}" style="color: black;">
-                    {{ form.hidden_tag() }}
+            <div class="modal-body" style="background-color: #fae4c7; color: #000000; border-bottom-left-radius: 15px !important; border-bottom-right-radius: 15px !important;">
+                <form method="post" action="{{ url_for('profile_pet', pet_id=pet.id) }}" style="color: black;">
+                    {{ form_description.hidden_tag() }}
                     <div class="mb-3">
-                        <label class="col-form-label">Новий username</label>
-                        {{ form.name(class="form-control") }}
+                        <label class="col-form-label">Новий опис</label>
+                        {{ form_description.description(class="form-control", style="min-height: 250px; max-height: auto;") }}
                     </div>
-                    <button type="submit" class="btn btn-primary mb-3" id="submitButton"
+                    <button type="submit" class="btn btn-primary mb-3" id="submitButton6"
                             style="background-color: #6b5243; border-color: #6b5243; color: #ffffff; padding: 0.5rem 1rem; border-radius: 0.25rem;"
                             onmouseover="this.style.backgroundColor='#6b5243'; this.style.borderColor='#6b5243';"
                             onmouseout="this.style.backgroundColor='#785b4b'; this.style.borderColor='#785b4b';">
-                        Зберегти зміни
+                        Зберігти зміни
                     </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="PasswordModal" tabindex="-1" aria-labelledby="PasswordModalLabel" aria-hidden="true"
-     style="color: black;">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="background-color: #fae4c7; color: #000000; border-radius: 15px !important;">
-            <div class="modal-header"
-                 style="background-color: #6b5243; color: #ffffff; border-top-left-radius: 15px !important; border-top-right-radius: 15px !important;">
-                <h1 class="modal-title fs-5" id="PasswordModalLabel">Редагування</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        style="filter: invert(1);"></button>
-            </div>
-            <div class="modal-body"
-                 style="background-color: #fae4c7; color: #000000; border-bottom-left-radius: 15px !important; border-bottom-right-radius: 15px !important;">
-                <form method="post" action="{{ url_for('profile') }}" style="color: black;">
-                    {{ form.hidden_tag() }}
-                    <div class="mb-3">
-                        <label class="col-form-label">Старий пароль</label>
-                        <input type="text" class="form-control" id="recipient-name">
-                    </div>
-                    <div class="mb-3">
-                        <label class="col-form-label">Новий пароль</label>
-                        <input type="text" class="form-control" id="recipient-name2">
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-3" id="submitButton2"
-                            style="background-color: #6b5243; border-color: #6b5243; color: #ffffff; padding: 0.5rem 1rem; border-radius: 0.25rem;"
-                            onmouseover="this.style.backgroundColor='#6b5243'; this.style.borderColor='#6b5243';"
-                            onmouseout="this.style.backgroundColor='#785b4b'; this.style.borderColor='#785b4b';">
-                        Зберегти зміни
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 
-{% endblock %}
+
+        {% endblock %}

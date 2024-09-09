@@ -1,8 +1,8 @@
-"""my new table
+"""Add likes column to Pet model
 
-Revision ID: dac712cf651c
+Revision ID: d4c0f5dc641a
 Revises: 
-Create Date: 2024-09-08 09:46:36.380221
+Create Date: 2024-09-08 21:07:25.631793
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'dac712cf651c'
+revision = 'd4c0f5dc641a'
 down_revision = None
 branch_labels = None
 depends_on = None

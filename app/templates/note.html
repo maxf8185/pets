@@ -1,12 +1,90 @@
-<div class="dropdown text-end">
-          <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="мдо" width="32" height="32" class="rounded-circle">
-          </a>
-          <ul class="dropdown-menu text-small">
-            <li><a class="dropdown-item" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Новый проект...</font></font></a></li>
-            <li><a class="dropdown-item" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Настройки</font></font></a></li>
-            <li><a class="dropdown-item" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Профиль</font></font></a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">выход</font></font></a></li>
-          </ul>
+<div class="flex-shrink-0" style="width: 60%; overflow: hidden; height: 100%;">
+    <div class="card"
+         style="width: 25rem; background-color: #fae4c7; color: black; font-size: 0.875rem; overflow: hidden; height: 660px; position: relative;">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                style="display: block; padding: 0; border: none; background: none; width: 100%;">
+            <img class="card-img-top" src="{{ url_for('static', filename='dog2.jpg') }}"
+                 alt="Описание картинки"
+                 style="width: 100%; height: auto; max-height: 300px; object-fit: cover;">
+        </button>
+
+        <div class="card-body" style="overflow: hidden; max-height: 660px;">
+            <p style="margin: 0; line-height: 0.5; font-size: 0.75rem;">{{ form.name.label(class="form-label") }}</p>
+            <div style="display: flex; align-items: center; margin: 0.5rem 0;">
+                <h3 style="margin: 0; line-height: 1.2; margin-right: 0.35rem;">
+                    {{ pet.name }}
+                </h3>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                        data-bs-target="#NameModal"
+                        style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none; margin-left: 5px;">
+                    <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                         height="12" style="vertical-align: middle; margin-top: -35px;">
+                </button>
+            </div>
+
+            <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                <img src="{{ url_for('static', filename='age.jpg') }}" alt="Иконка"
+                     style="width: 18px; height: 18px; margin-right: 0.3rem; vertical-align: middle;">
+                <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">{{ form.age.label(class="form-label") }}: {{ pet.age }}</h6>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                        data-bs-target="#AgeModal"
+                        style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none; margin-left: 5px;">
+                    <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                         height="12" style="vertical-align: middle; margin-top: -35px;">
+                </button>
+            </div>
+
+            <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                <img src="{{ url_for('static', filename='breed.jpg') }}" alt="Иконка"
+                     style="width: 18px; height: 18px; margin-right: 0.3rem; vertical-align: middle;">
+                <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">{{ form.breed.label(class="form-label") }}: {{ pet.breed }}</h6>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                        data-bs-target="#BreedModal"
+                        style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none; margin-left: 5px;">
+                    <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                         height="12" style="vertical-align: middle; margin-top: -35px;">
+                </button>
+            </div>
+
+            <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                <img src="{{ url_for('static', filename='category.jpg') }}" alt="Иконка"
+                     style="width: 18px; height: 18px; margin-right: 0.3rem; vertical-align: middle;">
+                <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">{{ form.category.label(class="form-label") }}: {{ pet.category.name }}</h6>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                        data-bs-target="#CategoryModal"
+                        style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none; margin-left: 5px;">
+                    <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                         height="12" style="vertical-align: middle; margin-top: -35px;">
+                </button>
+            </div>
+
+            <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                <img src="{{ url_for('static', filename=pet.country|get_image) }}"
+                     alt="Иконка"
+                     style="width: 18px; height: 18px; margin-right: 0.3rem; vertical-align: middle;">
+                <h6 style="margin: 0.25rem 0 0rem 0; line-height: 1.2;">{{ form.country.label(class="form-label") }}: {{ pet.country }}</h6>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                        data-bs-target="#CountryModal"
+                        style="border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none; margin-left: 5px;">
+                    <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                         height="12" style="vertical-align: middle; margin-top: -35px;">
+                </button>
+            </div>
+
+            <div style="position: relative; margin-top: 1rem;">
+                <p style="margin: 0; line-height: 2; font-size: 0.75rem; padding: 1rem; border: 1px solid #ccc; border-radius: 5px; background-color: #fff;">
+                    {{ pet.description }}
+                </p>
+                <button type="button" class="btn btn-link" data-bs-toggle="modal"
+                        data-bs-target="#DescriptionModal"
+                        style="position: absolute; top: -10px; right: -10px; border: none; background: none; padding: 0; font-size: 1.25rem; font-weight: normal; color: #000000; text-decoration: none; cursor: pointer; outline: none; box-shadow: none; margin-left: -5px;">
+                    <img src="{{ url_for('static', filename='pencil.jpg') }}" alt="Profile" width="12"
+                         height="12" style="vertical-align: middle; margin-top: -35px;">
+                </button>
+            </div>
         </div>
+    </div>
+</div>
+
+
+<p style="margin: 1rem 0 0; line-height: 2; font-size: 0.75rem;" class="card-title">Опис</p>

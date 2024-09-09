@@ -15,6 +15,7 @@ user_pet_likes = sa.Table(
     sa.Column('pet_id', sa.Integer, sa.ForeignKey('pet.id'), primary_key=True)
 )
 
+
 class User(UserMixin, db.Model):
     id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
     username: so.MappedColumn[str] = so.mapped_column(sa.String(60), unique=True)
@@ -32,14 +33,17 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
+
 
 class Category(db.Model):
     id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
     name: so.MappedColumn[str] = so.mapped_column(sa.String(60))
     pets: so.Mapped[List['Pet']] = so.relationship('Pet', back_populates='category')
+
 
 class Pet(db.Model):
     id: so.MappedColumn[int] = so.mapped_column(primary_key=True)
@@ -55,5 +59,6 @@ class Pet(db.Model):
     likers: so.Mapped[List[User]] = so.relationship('User', secondary=user_pet_likes, back_populates='liked_pets')
     likes: so.MappedColumn[int] = so.mapped_column(sa.Integer, default=0)
     creation_date = Column(DateTime, default=datetime.utcnow)
+
     def __repr__(self):
         return f'Pet: {self.name}'
