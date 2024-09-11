@@ -10,28 +10,33 @@
         {% endif %}
         <div class="row">
             {% for pet in pets %}
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                <div class="card shadow-sm d-flex flex-column"
-                     style="background-color: #fae4c7; color: black; height: 100%; font-size: 0.875rem;">
-                    <a href="{{ url_for('profile_pet', pet_id=pet.id) }}" style="display: block;">
-                        <img class="card-img-top" src="{{ url_for('static', filename='dog2.jpg') }}"
-                             alt="Описание картинки"
-                             style="width: 100%; height: auto; max-height: 200px; object-fit: cover;">
-                    </a>
-                    <div class="card-body d-flex flex-column" style="flex-grow: 1;">
-                        <a href="{{ url_for('index') }}" style="text-decoration: none; color: black;">
+<div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card shadow-sm d-flex flex-column"
+                 style="background-color: #fae4c7; color: black; height: 100%; font-size: 0.875rem;">
+                <a href="{{ url_for('profile_pet', pet_id=pet.id) }}"
+                   style="display: block; width: 100%; max-width: 300px; height: 168.75px; overflow: hidden;">
+                    <img class="card-img-top" src="{{ url_for('static', filename='dog2.jpg') }}" alt="Описание картинки"
+                         style="width: 100%; height: 100%; object-fit: cover;">
+                </a>
+                <div class="card-body d-flex flex-column" style="flex-grow: 1;">
+                    <a href="{{ url_for('profile_pet', pet_id=pet.id) }}" style="text-decoration: none; color: black;">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ url_for('static', filename=pet.country|get_image) }}"
+                                 alt="Иконка"
+                                 style="width: 18px; height: 18px; margin-right: 0.3rem;">
                             <h4 class="card-title" style="margin-bottom: 0; font-size: 1rem;">{{ pet.name }}</h4>
-                            <h6 class="card-title" style="margin-bottom: 0; font-size: 0.875rem;">{{
-                                pet.creation_date.strftime('%d.%m.%Y - %H:%M') }}</h6>
-                            <p class="card-text"
-                               style="overflow: hidden; text-overflow: ellipsis; white-space: normal; font-size: 0.75rem;">
-                                {{ pet.description|truncate(50, True, '...') }}
-                            </p>
-                        </a>
-                    </div>
-                    <div class="card-footer mt-auto d-flex justify-content-between align-items-center">
-                        <form action="{{ url_for('like_pet', pet_id=pet.id) }}" method="post" class="d-inline">
-                            <button type="submit" class="icon-link" style="border: none; background: none;">
+                        </div>
+                        <p class="card-text"
+                           style="overflow: hidden; text-overflow: ellipsis; white-space: normal; font-size: 0.75rem; margin-top: 0.5rem;">
+                            {{ pet.description|truncate(150, True, '...') }}
+                        </p>
+                    </a>
+                </div>
+                <div class="card-footer mt-auto d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <form action="{{ url_for('like_pet', pet_id=pet.id) }}" method="post" class="d-inline"
+                              style="margin-right: 8px;">
+                            <button type="submit" class="icon-link" style="border: none; background: none; padding: 0;">
                                 {% if current_user.id in pet.likers|map(attribute='id')|list %}
                                 <img src="{{ url_for('static', filename='heart.jpg') }}" alt="Иконка" class="icon-img">
                                 {% else %}
@@ -41,18 +46,18 @@
                                 <span class="icon-text">{{ pet.likes }}</span>
                             </button>
                         </form>
-                        <form action="{{ url_for('delete_pet', pet_id=pet.id) }}" method="post"
-                              style="display: inline;">
-                            <button type="submit" class="btn btn-sm"
-                                    style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b; border-radius: 0.5rem; font-size: 0.75rem; padding: 0.25rem 0.5rem;"
-                                    onmouseover="this.style.backgroundColor='#785b4b'; this.style.color='white'; this.style.borderColor='#785b4b';"
-                                    onmouseout="this.style.backgroundColor='transparent'; this.style.color='#785b4b'; this.style.borderColor='#785b4b';">
-                                Видалити
-                            </button>
-                        </form>
+                        <a href="{{ url_for('profile_pet', pet_id=pet.id) }}" class="icon-link"
+                           style="margin-left: 8px;">
+                            <img src="{{ url_for('static', filename='comment.jpg') }}" alt="Иконка" class="icon-img">
+                            <span class="icon-text">0</span>
+                        </a>
                     </div>
+                    <p style="margin: 0; margin-top: 0px; line-height: 0.5; font-size: 0.75rem;">
+                        {{ time_since(pet.creation_date) }}
+                    </p>
                 </div>
             </div>
+        </div>
             {% else %}
             <div class="container w-25 mt-3"
                  style="background-color: rgba(250, 228, 199, 0.8); border-radius: 30px; color: black; padding: 20px; min-width: 200px; min-height: 300px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center;">

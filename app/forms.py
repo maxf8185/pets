@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import FloatField, StringField, SubmitField, IntegerField, TextAreaField, PasswordField, SelectField
+from wtforms import FloatField, StringField, SubmitField, IntegerField, TextAreaField, PasswordField, SelectField, HiddenField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from app import app, db
 import sqlalchemy as sa
-from app.models import Category
+from app.models import Category, Country
 
 
 class RegistrationForm(FlaskForm):
@@ -31,7 +31,7 @@ class PetForm(FlaskForm):
     description = TextAreaField("Історія", validators=[DataRequired()])
     age = IntegerField("Вік", validators=[DataRequired()])
     breed = StringField("Порода", validators=[DataRequired()])
-    country = StringField("Країна", validators=[DataRequired()])
+    country = SelectField("Країна", coerce=int, validators=[DataRequired()])
     category = SelectField("Категорія", coerce=int, validators=[DataRequired()])
     submit = SubmitField("Відправити")
 
@@ -39,6 +39,9 @@ class PetForm(FlaskForm):
         super(PetForm, self).__init__(*args, **kwargs)
         self.category.choices = [
             (category.id, category.name) for category in db.session.query(Category).order_by(Category.name).all()
+        ]
+        self.country.choices = [
+            (country.id, country.name) for country in db.session.query(Country).order_by(Country.name).all()
         ]
 
 
@@ -58,8 +61,14 @@ class EditBreedPet(FlaskForm):
 
 
 class EditCountryPet(FlaskForm):
-    country = StringField("Країна", validators=[DataRequired()])
+    country = SelectField("Вид", coerce=int, validators=[DataRequired()])
     submit = SubmitField('Зберегти зміни')
+
+    def __init__(self, *args, **kwargs):
+        super(EditCountryPet, self).__init__(*args, **kwargs)
+        self.country.choices = [
+            (country.id, country.name) for country in db.session.query(Country).order_by(Country.name).all()
+        ]
 
 
 class EditDescriptionPet(FlaskForm):
@@ -81,3 +90,8 @@ class EditCategoryPet(FlaskForm):
 class CategoryForm(FlaskForm):
     name = StringField("Ім'я категорії", validators=[DataRequired()])
     submit = SubmitField("Створити")
+
+
+class CommentForm(FlaskForm):
+    text = TextAreaField('Comment', validators=[DataRequired()])
+    submit = SubmitField("Submit")

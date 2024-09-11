@@ -18,55 +18,45 @@ html, body {
     min-height: 100vh; /* Обеспечивает высоту на всю высоту видимого окна */
     margin: 0; /* Убирает отступы */
 }
-    .icon-link {
-        display: flex;
-        align-items: center;
-        text-decoration: none; /* Убираем подчеркивание */
-        color: inherit; /* Отключаем стандартный синий цвет */
-        font-size: 0.75rem;
-    }
+        .hover-img:hover {
+            transform: scale(1.1);
+        }
 
-    .icon-link:visited, .icon-link:active, .icon-link:hover {
-        text-decoration: none; /* Убираем подчеркивание для всех состояний */
-        color: inherit; /* Сохраняем цвет неизменным при всех состояниях */
-    }
+            .icon-link {
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                color: inherit;
+                font-size: 0.75rem;
+            }
 
-    .icon-img {
-        width: 1.25rem;
-        height: 1.25rem;
-        opacity: 0.9;
-        transition: transform 0.3s ease, opacity 0.3s ease;
-    }
+            .icon-link:visited, .icon-link:active, .icon-link:hover {
+                text-decoration: none;
+                color: inherit;
+            }
 
-    .icon-text {
-        margin-left: 0.25rem;
-        transition: margin-left 0.3s ease;
-        color: inherit; /* Цвет текста не меняется */
-    }
+            .icon-img {
+                width: 1.25rem;
+                height: 1.25rem;
+                opacity: 0.9;
+                transition: transform 0.3s ease, opacity 0.3s ease;
+            }
 
-    .icon-link:hover .icon-img {
-        opacity: 1;
-        transform: scale(1.1);
-    }
+            .icon-text {
+                margin-left: 0.25rem;
+                transition: margin-left 0.3s ease;
+                color: inherit;
+            }
 
-    .icon-link:hover .icon-text {
-        margin-left: 0.5rem;
-    }
-        a:hover img {
-        transform: scale(1.1); /* Увеличение картинки на 10% */
-    }
-        /* Стили для увеличения картинки при наведении */
-    .card-img-top {
-        transition: transform 0.3s ease;
-    }
+            .icon-link:hover .icon-img {
+                opacity: 1;
+                transform: scale(1.1);
+            }
 
-    .card-img-top:hover {
-        transform: none; /* Убираем увеличение */
-    }
+            .icon-link:hover .icon-text {
+                margin-left: 0.5rem;
+            }
 
-    .icon-link:hover .icon-img {
-        transform: scale(1.1); /* Увеличение иконки на 10% при наведении */
-    }
 </style>
 <div class="container w-75 mt-3"
      style="background-color: rgba(250, 228, 199, 0.8); border-radius: 30px; color: black; padding: 20px; max-width: 900px; max-height: 700px;">
@@ -153,38 +143,45 @@ html, body {
                                  style="width: 100%; height: auto; max-height: 200px; object-fit: cover;">
                         </a>
                         <div class="card-body d-flex flex-column" style="flex-grow: 1;">
-                            <a href="{{ url_for('index') }}" style="text-decoration: none; color: black;">
-                                <h4 class="card-title" style="margin-bottom: 0; font-size: 1rem;">{{ pet.name }}</h4>
-                                <h6 class="card-title" style="margin-bottom: 0; font-size: 0.875rem;">02.09.2024 -
-                                    15:00</h6>
-                                <p class="card-text"
-                                   style="overflow: hidden; text-overflow: ellipsis; white-space: normal; font-size: 0.75rem;">
-                                    {{ pet.description|truncate(50, True, '...') }}
-                                </p>
-                            </a>
+                    <a href="{{ url_for('profile_pet', pet_id=pet.id) }}" style="text-decoration: none; color: black;">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ url_for('static', filename=pet.country|get_image) }}"
+                                 alt="Иконка"
+                                 style="width: 18px; height: 18px; margin-right: 0.3rem;">
+                            <h4 class="card-title" style="margin-bottom: 0; font-size: 1rem;">{{ pet.name }}</h4>
                         </div>
-                        <div class="card-footer d-flex justify-content-between align-items-center">
-                            <form action="{{ url_for('like_pet', pet_id=pet.id) }}" method="post" class="d-inline">
-                                <button type="submit" class="icon-link" style="border: none; background: none;">
-                                    {% if current_user.id in pet.likers|map(attribute='id')|list %}
-                                    <img src="{{ url_for('static', filename='heart.jpg') }}" alt="Иконка"
+                        <p class="card-text"
+                           style="overflow: hidden; text-overflow: ellipsis; white-space: normal; font-size: 0.75rem; margin-top: 0.5rem;">
+                            {{ pet.description|truncate(150, True, '...') }}
+                        </p>
+                    </a>
+                        </div>
+                        <div class="card-footer mt-auto d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <form action="{{ url_for('like_pet', pet_id=pet.id) }}" method="post" class="d-inline"
+                                      style="margin-right: 8px;">
+                                    <button type="submit" class="icon-link"
+                                            style="border: none; background: none; padding: 0;">
+                                        {% if current_user.id in pet.likers|map(attribute='id')|list %}
+                                        <img src="{{ url_for('static', filename='heart.jpg') }}" alt="Иконка"
+                                             class="icon-img">
+                                        {% else %}
+                                        <img src="{{ url_for('static', filename='heart_empty.jpg') }}" alt="Иконка"
+                                             class="icon-img">
+                                        {% endif %}
+                                        <span class="icon-text">{{ pet.likes }}</span>
+                                    </button>
+                                </form>
+                                <a href="{{ url_for('profile_pet', pet_id=pet.id) }}" class="icon-link"
+                                   style="margin-left: 8px;">
+                                    <img src="{{ url_for('static', filename='comment.jpg') }}" alt="Иконка"
                                          class="icon-img">
-                                    {% else %}
-                                    <img src="{{ url_for('static', filename='heart_empty.jpg') }}" alt="Иконка"
-                                         class="icon-img">
-                                    {% endif %}
-                                    <span class="icon-text">{{ pet.likes }}</span>
-                                </button>
-                            </form>
-                            <form action="{{ url_for('delete_pet', pet_id=pet.id) }}" method="post"
-                                  style="display: inline;">
-                                <button type="submit" class="btn btn-sm"
-                                        style="background-color: transparent; color: #785b4b; border: 1px solid #785b4b; border-radius: 0.5rem; font-size: 0.75rem; padding: 0.25rem 0.5rem;"
-                                        onmouseover="this.style.backgroundColor='#785b4b'; this.style.color='white'; this.style.borderColor='#785b4b';"
-                                        onmouseout="this.style.backgroundColor='transparent'; this.style.color='#785b4b'; this.style.borderColor='#785b4b';">
-                                    Видалити
-                                </button>
-                            </form>
+                                    <span class="icon-text">0</span>
+                                </a>
+                            </div>
+                            <p style="margin: 0; margin-top: 0px; line-height: 0.5; font-size: 0.75rem;">
+                                {{ time_since(pet.creation_date) }}
+                            </p>
                         </div>
                     </div>
                 </div>
